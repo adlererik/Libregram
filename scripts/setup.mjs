@@ -17,6 +17,7 @@ const settings = [
   'SESSION_COOKIE_SECURE="false"',
   'TRUST_PROXY="false"',
   'ADMIN_AUTH_MODE="password"',
+  'VISITOR_GEO_PROVIDER="local"',
 ];
 try {
   await writeFile(path.join(root, ".env.local"), settings.join("\n") + "\n", { flag: "wx", mode: 0o600 });

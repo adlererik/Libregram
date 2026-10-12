@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { toArchivePost } from "@/lib/archive";
 import { encodeCursor } from "@/lib/pagination";
 import { getHeader } from "@/lib/settings";
+import { usesIP2Location } from "@/scripts/visitor-location.mjs";
 
 export const dynamic = "force-dynamic";
 
@@ -19,5 +20,5 @@ export default async function Home() {
 
   const page = posts.slice(0, 32);
   const last = page.at(-1);
-  return <ArchiveWall header={await getHeader()} initialPosts={page.map(toArchivePost)} initialCursor={posts.length > 32 && last ? encodeCursor(last) : null} isAdmin={isAdmin} />;
+  return <ArchiveWall header={await getHeader()} initialPosts={page.map(toArchivePost)} initialCursor={posts.length > 32 && last ? encodeCursor(last) : null} isAdmin={isAdmin} ip2Location={usesIP2Location()} />;
 }

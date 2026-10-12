@@ -1,5 +1,14 @@
 # Changelog and development notes
 
+## v1.4.0 — October 12, 2026
+
+- Add optional free IP2Location.io IPv4/IPv6 city/region/country estimates and coordinates, with local fallback, 24-hour memory caching, serialized duplicate lookups, and a persistent 900/day request cap.
+- Preserve country flags; add small Apple Maps/Google Maps links explicitly labeled estimated location, and authenticated refresh of older locations.
+- Estimate visible-page duration with signed, same-origin, first-party activity updates; hidden time is excluded and earlier durations stay unknown.
+- Correct recognition of URL-encoded signed administrator cookies; keep local/recognized owner visits excluded, including matching historical records.
+- Add optional/defaulted Visit columns without deleting existing history, posts, media, credentials, or settings. Back up SQLite and apply the schema before building.
+- Update provider-aware public privacy disclosure, visible attribution, free-plan instructions, limitations, feature guides, and release downloads. Preserve README screenshot links and default username/password login for new installations.
+
 ## v1.3.0 — October 10, 2026
 
 - Add compact public links for individual media and ordered photo/video Favorites presentations, with repeating playback and thumbnail preview metadata.

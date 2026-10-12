@@ -52,7 +52,7 @@ archive_backup="$HOME/Archive-backups/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$archive_backup"
 chmod 700 "$HOME/Archive-backups" "$archive_backup"
 cp -a --parents .env .env.local prisma/dev.db public/uploads "$archive_backup/"
-for archive_private in .runtime/admin-auth.json .runtime/visitor-exclusions.json .runtime/shared-links; do
+for archive_private in .runtime/admin-auth.json .runtime/visitor-exclusions.json .runtime/shared-links .runtime/ip2location-usage.json; do
   if [ -e "$archive_private" ]; then
     cp -a --parents "$archive_private" "$archive_backup/"
   fi
@@ -70,11 +70,11 @@ Back up first and record the current revision. Substitute the desired release ta
 
 ```bash
 git fetch origin --tags
-git checkout v1.3.0
+git checkout v1.4.0
 ./archive install
 ```
 
-v1.3.0 has no schema change from v1.2.0. If upgrading from an older release, apply the optional soundtrack fields introduced in v1.2.0 with `pnpm db:push` after reviewing the schema. Never accept a destructive reset as an installation fix. Existing credentials and login mode are preserved; only fresh installations default to password login.
+v1.4.0 adds optional visitor coordinates, duration and last-update columns plus a default location-source label. Back up SQLite, then apply `pnpm db:push` before building. Older visits retain their history; their duration remains unknown. Upgrades from v1.1.0 or earlier also apply the optional soundtrack fields from v1.2.0. Never accept a destructive reset as an installation fix. Existing credentials and login mode are preserved; only fresh installations default to password login.
 
 For the boot service:
 

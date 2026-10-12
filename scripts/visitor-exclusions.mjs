@@ -26,6 +26,8 @@ export async function rememberOwner(ip, visitorKey) {
 }
 export async function hasAdminSession(token, secret, prisma) {
   if (!token || token.length > 2048) return false;
+  // The custom HTTP server receives the encoded cookie; Next's reader decodes it.
+  try { token = decodeURIComponent(token); } catch { return false; }
   const [value, signature, extra] = token.split(".");
   if (!value || !signature || extra !== undefined) return false;
   const expected = createHmac("sha256", secret).update(value).digest("base64url");

@@ -2,7 +2,7 @@
 
 ### Your own Instagram replacement: photos, videos, and memories on your server
 
-By **Erik Adler** · Latest release **v1.3.0** · [MIT license](LICENSE)
+By **Erik Adler** · Latest release **v1.4.0** · [MIT license](LICENSE)
 
 Give your memories a home you control. The Archive combines an Instagram-style timeline, a cinematic gallery, a built-in CMS, and presentations you can share with **one short URL**. Keep your original photos and videos on your own server. Browse them on a phone, send a collection to family, or play it on a TV with **Google Cast or AirPlay**.
 
@@ -41,12 +41,12 @@ The project's existing screenshots are preserved below. They illustrate the gall
 
 **New to servers? Follow the [beginner guide](docs/BEGINNER-GUIDE.md).** It explains the terminal commands, first login, first upload, sharing, TV playback, public HTTPS, startup at boot, backups, and recovery.
 
-- [Download v1.3.0](https://github.com/adlererik/the-archive/releases/tag/v1.3.0)
+- [Download v1.4.0](https://github.com/adlererik/the-archive/releases/tag/v1.4.0)
 - [All features](docs/FEATURES.md)
 - [Installation and migration reference](docs/PUBLIC-SETUP.md)
 - [Sharing, presentations, and casting](docs/FAVORITES-CASTING.md)
 - [Administration and visitor history](docs/ADMIN.md)
-- [Release notes](docs/RELEASE-v1.3.0.md)
+- [Release notes](docs/RELEASE-v1.4.0.md)
 
 ## What makes The Archive useful
 
@@ -67,7 +67,9 @@ The project's existing screenshots are preserved below. They illustrate the gall
 | Five themes | Gold, Graphite, light Porcelain, Midnight, and Verdant; your media keeps its original colors. |
 | Post soundtracks | Upload audio, preview, trim, adjust volume, loop, and choose whether to keep original video sound. |
 | Built-in CMS | Drag/drop uploads, multi-file carousels, backdated memories, caption/date editing, and insertion anywhere in the timeline. |
-| Visitor history | Outside visits with public IP, country flag, approximate city, OS/device/browser, and counts; recognized owner/local visits are excluded. |
+| Visitor history | Outside visits with IPv4/IPv6, country flag, estimated city, OS/device/browser, and counts; recognized owner/local visits are excluded. |
+| Free location API and maps | Optional IP2Location.io city estimates with caching and a local fallback; open estimated coordinates in Apple Maps or Google Maps. |
+| Estimated visit duration | See time while the page was visible, updated about every 20 seconds; older durations are not invented. |
 | Persistent statistics | History stays until you manually delete one visit or all history; older records are paginated. |
 | Simple default login | A unique username/password installation with local recovery; optional verified Cloudflare identity login for owners who configure it. |
 | Settings and handbook | The cogwheel contains header text, visitor history, login settings, and included documentation; the square-plus keeps uploads separate. |
@@ -85,7 +87,7 @@ Supported walkthrough: **Debian/Ubuntu Linux**, a normal user with sudo, **Node.
 Once those tools are installed:
 
 ```bash
-git clone --branch v1.3.0 https://github.com/adlererik/the-archive.git
+git clone --branch v1.4.0 https://github.com/adlererik/the-archive.git
 cd the-archive
 ./archive setup
 ./archive start
@@ -139,8 +141,10 @@ Google Cast presentation queues run on the receiver. AirPlay presentation advanc
 
 **Release downloads contain no private passwords, tokens, account configuration, personal media files, populated databases, visitor records, private backups, runtime binaries, or compiled builds.** Each installation supplies its own collection and receives its own credentials. The intentionally published README screenshot links remain.
 
-The published gallery, media, and shared links are public. Admin and visitor IPs require authentication. Visitor history is local, has no automatic deletion, and excludes local/recognized owner traffic. Customize the included visitor privacy notice for your deployment.
+The published gallery, media, and shared links are public. Admin and visitor IPs require authentication. Visitor history is local, has no automatic deletion, and excludes local/recognized owner traffic. Customize the included visitor privacy notice for your deployment. The default local lookup sends no IPs to a lookup provider. You can [enable the free IP2Location.io API](docs/VISITOR-STATS.md#enable-free-ip2locationio) for IPv4/IPv6 city estimates, flags, and map links. When enabled, outside public IPs are sent to the provider; its attribution appears on the gallery, privacy notice, and admin statistics. Map pins are approximate, never someone’s exact GPS position. Duration measures visible-page time, not verified attention.
+
+IP2Location.io currently allows 1,000 keyless requests/day or 50,000/month with a free-account key; this implementation caps requests at 900 per UTC day, caches successful estimates for 24 hours, and falls back locally. No card or account is needed for keyless lookup, and there are no free-plan overage charges. Map links require no Maps API key or paid geocoding service. [Current provider pricing](https://www.ip2location.io/pricing).
 
 The software is **MIT licensed** and requires no paid sharing API, link shortener, casting registration, or CMS subscription. Hosting, storage, electricity, Internet service, domain registration/renewal, and receiver hardware are your own costs. Optional Cloudflare services have their own plan limits; the standard password login works without them. See [optional identity setup and current plan references](docs/ADMIN.md).
 
-Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.3.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.
+Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.4.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.

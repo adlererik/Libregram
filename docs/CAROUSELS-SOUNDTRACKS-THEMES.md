@@ -51,4 +51,4 @@ Preferences are saved per browser and hostname. New visitors start in Gold. Medi
 
 ## Upgrade notes
 
-Soundtrack fields were added to `Post` in v1.2.0. v1.3.0 adds no further schema changes. Back up SQLite, uploads, and private environment files before deployment. Run `pnpm exec prisma db push` with the new schema; do not use `--accept-data-loss` or reset the database. Existing posts get empty soundtrack defaults and keep their media/order. Generate the client, build, and restart your application. Preserve the former build and a private database backup for rollback.
+Soundtrack fields were added to `Post` in v1.2.0. v1.4.0 also adds optional visitor coordinates/duration and a default location-source column; these do not change media or soundtracks. Back up SQLite, uploads, and private environment files before deployment. Run `pnpm exec prisma db push` with the new schema; do not use `--accept-data-loss` or reset the database. Existing posts get empty soundtrack defaults and keep their media/order. Generate the client, build, and restart your application. Preserve the former build and a private database backup for rollback.

@@ -4,7 +4,7 @@
 
 The Archive is Erik Adler's self-hosted photo/video gallery, preservation suite, and CMS. He developed it to own his memories beyond Instagram's walled garden; in his experience Pixelfed was too limited and clunky for his needs. It replaces a personal gallery workflow, not a full social network.
 
-Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.3.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, and verification.
+Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.4.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, and verification.
 
 ## Architecture and behavior to preserve
 
@@ -21,7 +21,7 @@ Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantia
 
 Never commit or publish media, populated SQLite files, visitor records, private environment files, passwords, session/tunnel tokens, authentication files, screenshots, private backups, or credential-bearing logs. Respect .gitignore. Publish releases from audited Git source, not the working directory; provide source archives and checksums. Attribute project commits to Erik Adler using the configured GitHub noreply identity.
 
-Use the locked dependencies and supported Node.js version. v1.2.0 adds optional soundtrack columns; back up existing data before schema updates. Never reset an existing database or accept data loss without explicit authorization. Do not overwrite an installation's environment or account settings.
+Use the locked dependencies and supported Node.js version. v1.2.0 adds optional soundtrack columns; v1.4.0 adds nullable visitor coordinates/duration and a location-source default; back up existing data before schema updates. Never reset an existing database or accept data loss without explicit authorization. Do not overwrite an installation's environment or account settings.
 
 ## Working here
 

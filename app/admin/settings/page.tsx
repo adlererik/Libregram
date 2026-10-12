@@ -9,6 +9,7 @@ import { getAdminAuthSettings } from "@/lib/admin-auth-settings";
 import { prisma } from "@/lib/prisma";
 import { getHeader } from "@/lib/settings";
 import { visitorFilter } from "@/lib/visitor-filter";
+import { usesIP2Location } from "@/scripts/visitor-location.mjs";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,6 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
   const requested = Number((await searchParams).visitsPage || 1);
   const visitPages = Math.max(1, Math.ceil(visitCount / 50));
   const visitPage = Number.isSafeInteger(requested) && requested > 0 ? Math.min(requested, visitPages) : 1;
-  const visits = await prisma.visit.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: (visitPage - 1) * 50, take: 50, select: { id: true, ip: true, city: true, country: true, region: true, device: true, os: true, browser: true, language: true, referrer: true, userAgent: true, createdAt: true } });
-  return <AdminShell title="Archive settings" description="Visitor history, gallery details, login settings, and your archive handbook." current="settings"><AdminConsole username={account.username} adminAuth={adminAuth} header={header} visits={visits.map(v => ({ ...v, createdAt: v.createdAt.toISOString() }))} stats={{ visits: visitCount, visitors: visitors.length, cities: cities.length, posts, media, hearts }} visitPage={visitPage} visitPages={visitPages} breakdown={devices.map(d => ({ device: d.device, count: d._count._all }))} documents={documents} /></AdminShell>;
+  const visits = await prisma.visit.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: (visitPage - 1) * 50, take: 50, select: { id: true, ip: true, city: true, country: true, region: true, latitude: true, longitude: true, locationSource: true, durationSeconds: true, lastSeenAt: true, device: true, os: true, browser: true, language: true, referrer: true, userAgent: true, createdAt: true } });
+  return <AdminShell title="Archive settings" description="Visitor history, gallery details, login settings, and your archive handbook." current="settings"><AdminConsole username={account.username} adminAuth={adminAuth} header={header} visits={visits.map(v => ({ ...v, createdAt: v.createdAt.toISOString(), lastSeenAt: v.lastSeenAt?.toISOString() || null }))} geoProvider={usesIP2Location() ? "ip2location" : "local"} stats={{ visits: visitCount, visitors: visitors.length, cities: cities.length, posts, media, hearts }} visitPage={visitPage} visitPages={visitPages} breakdown={devices.map(d => ({ device: d.device, count: d._count._all }))} documents={documents} /></AdminShell>;
 }

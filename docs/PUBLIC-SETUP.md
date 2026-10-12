@@ -61,13 +61,13 @@ Stop the application, make a private backup, and record the old Git revision fir
 
 ```bash
 git fetch origin --tags
-git checkout v1.3.0  # Substitute the release you intend to install.
+git checkout v1.4.0  # Substitute the release you intend to install.
 ./archive install
 # Review schema changes, then apply only if appropriate:
 pnpm db:push
 ```
 
-v1.3.0 has no schema changes from v1.2.0; existing installation login settings stay unchanged. Upgrades from v1.1.0 or earlier need the optional soundtrack fields introduced in v1.2.0. Apply the schema before building; never use `--accept-data-loss` or reset the existing database.
+v1.4.0 adds optional visitor latitude/longitude, duration, last-update time, and a location-source field with a default for older rows. Back up SQLite first, then apply `pnpm db:push` before building. Existing posts, visitor history, credentials, and login mode stay intact. Upgrades from v1.1.0 or earlier also need the optional soundtrack fields introduced in v1.2.0. Apply the schema before building; never use `--accept-data-loss` or reset the existing database.
 
 For a foreground installation: `./archive stop`, `./archive build`, `./archive start`.
 

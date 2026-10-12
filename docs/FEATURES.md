@@ -1,4 +1,4 @@
-# Complete feature guide — v1.3.0
+# Complete feature guide — v1.4.0
 
 By Erik Adler. See the [beginner guide](BEGINNER-GUIDE.md) to install and the [changelog](CHANGELOG.md) for version history.
 
@@ -78,7 +78,7 @@ Fresh setup explicitly selects username/password login and creates unique creden
 
 The admin-only cogwheel at the right end of the gallery icon row opens settings: visitor history, gallery title/eyebrow/introduction, login settings, and Info & documentation. The square-plus opens the separate **A new chapter** media uploader. The Info panel contains the included installation, feature, editing, casting, and operation guides.
 
-Statistics include visits, collection counts/hearts, IP addresses, approximate city/country with flags, device, OS icons, and browser. IPs are visible only to the administrator. Local addresses and recognized administrator browsers/IPs are excluded, including matching historical rows. Sign in on a new browser/address to identify it as yours. Location is IP-derived, not GPS, and can be wrong or missing. History remains until manually deleted, with individual/all-record deletion and paged access to older records. The visitor privacy page describes this behavior. Administrative statistics are not shipped with source releases.
+Statistics include visits, collection counts/hearts, IPv4/IPv6 addresses, estimated city/country with flags, device, OS icons, browser, and visible-page duration. Optional free IP2Location.io lookup uses caching, a daily cap, and a local fallback; historical estimates can be refreshed. A small map link opens estimated coordinates in Apple Maps or Google Maps according to the administrator device. IPs are visible only to the administrator. Local addresses and recognized administrator browsers/IPs are excluded, including matching historical rows. Sign in on a new browser/address to identify it as yours. Location is IP-derived, not GPS, and can be wrong or missing. History remains until manually deleted, with individual/all-record deletion and paged access to older records. The visitor privacy page describes this behavior. Administrative statistics are not shipped with source releases.
 
 ## Import and preservation
 
@@ -90,7 +90,7 @@ Originals and generated previews/playback files live under `public/uploads/`; re
 
 Supported beginner path: Debian/Ubuntu Linux, Node.js 24+, pinned pnpm, FFmpeg/FFprobe, Git, Bash. Setup starts empty and builds production code. The launcher uses port 3000 on all interfaces and refuses an occupied port instead of opening a duplicate on 3001.
 
-Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.2.0 requires applying the optional soundtrack schema fields before building an older installation.
+Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.4.0 adds optional visitor coordinates/duration and a location-source default; v1.2.0 added optional soundtrack fields. Back up SQLite and apply the schema before building an older installation. See [free visitor lookup setup and limitations](VISITOR-STATS.md).
 
 Source ZIP/tarball releases include checksums, schema, lockfile, and guides. They exclude credentials, personal media, populated databases, visitor data, private settings, backups, runtime binaries, and compiled output. The source is MIT licensed; owners maintain their own hosting and storage.
 

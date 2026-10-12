@@ -1,6 +1,6 @@
 # Cloudflare HTTPS, domains, and server operations
 
-By Erik Adler. Updated for v1.3.0. Cloudflare is optional; local installation and password login work without it.
+By Erik Adler. Updated for v1.4.0. Cloudflare is optional; local installation and password login work without it.
 
 ## Server layout
 

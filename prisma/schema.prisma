@@ -72,6 +72,11 @@ model Visit {
   city       String @default("")
   country    String @default("")
   region     String @default("")
+  latitude   Float?
+  longitude  Float?
+  locationSource String @default("legacy")
+  durationSeconds Int?
+  lastSeenAt DateTime?
   device     String
   os         String
   browser    String

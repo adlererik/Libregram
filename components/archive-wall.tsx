@@ -13,7 +13,7 @@ import { useFavorites } from "./favorites-provider";
 import { ThemeButton } from "./theme-button";
 import { ThumbnailWall } from "./thumbnail-wall";
 
-type Props = { header: HeaderSettings; initialPosts: ArchivePost[]; initialCursor: string | null; isAdmin: boolean };
+type Props = { header: HeaderSettings; initialPosts: ArchivePost[]; initialCursor: string | null; isAdmin: boolean; ip2Location: boolean };
 
 function FilmReelIcon() {
   return <svg aria-hidden="true" data-icon="film-reel" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +30,7 @@ function FilmReelIcon() {
   </svg>;
 }
 
-export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin }: Props) {
+export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin, ip2Location }: Props) {
   const favorites = useFavorites();
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
@@ -141,7 +141,7 @@ export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin }: Pr
       {posts.length ? view === "thumbnails" ? <ThumbnailWall posts={posts} loading={loading} hasMore={Boolean(cursor)} onOpen={openPost} onTimeline={toggleView} /> : <section aria-label="Memories in chronological order" className="mx-auto grid max-w-[1740px] grid-cols-1 items-start gap-5 md:grid-cols-2 xl:grid-cols-4">{posts.map((post) => <MediaCard key={post.id} post={post} isAdmin={isAdmin} theaterOpen={Boolean(selectedId || editing)} onOpen={(mediaIndex) => openPost(post, mediaIndex)} onEdit={() => setEditing(post)} />)}</section> : <div className="mx-auto max-w-lg py-32 text-center text-white/55"><p className="font-editorial text-3xl text-white">Awaiting the first memory.</p><p className="mt-3 text-sm">Sign in to add it to the collection.</p></div>}
       <div ref={sentinel} className="flex h-24 items-center justify-center" aria-live="polite">{loading ? <span className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/45"><ArrowDown className="h-4 w-4 animate-bounce" /> Retrieving the past</span> : null}</div>
       {loadError ? <p className="text-center text-sm text-white/60">The connection was interrupted. <button onClick={() => void loadMore()} className="text-studio-accent underline">Retry</button></p> : null}
-      <p className="mt-6 text-center text-xs text-white/35">Visit statistics are stored locally for the archive owner. <Link href="/privacy" className="underline">Details</Link></p>
+      <p className="mt-6 text-center text-xs text-white/35">Visit statistics are stored locally for the archive owner. {ip2Location ? <>The Archive uses <a href="https://www.ip2location.io" target="_blank" rel="noopener noreferrer" className="underline">IP2Location.io IP geolocation</a> web service. </> : null}<Link href="/privacy" className="underline">Details</Link></p>
 
       {selected ? <TheaterModal key={selected.id} post={selected} initialMediaIndex={selectedMedia} posts={posts} onClose={closePost} onPrevious={() => flushSync(() => { setSelectedMedia(0); setSelectedId(posts[Math.max(0, selectedIndex - 1)]?.id ?? null); })} onNext={() => flushSync(() => { setSelectedMedia(0); setSelectedId(posts[Math.min(posts.length - 1, selectedIndex + 1)]?.id ?? null); })} /> : null}
       {editing ? <EditPostModal post={editing} onClose={() => setEditing(null)} onUpdated={updatePost} onDeleted={removePost} /> : null}

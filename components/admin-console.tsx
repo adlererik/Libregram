@@ -9,13 +9,13 @@ import { AdminAuthMode } from "./admin-auth-mode";
 import type { AdminAuthSettings } from "@/lib/admin-auth-settings";
 import { VisitorStatsPanel, type VisitRow, type VisitorStats } from "./visitor-stats";
 
-type Props = { username: string; adminAuth: AdminAuthSettings; header: HeaderSettings; visits: VisitRow[]; stats: VisitorStats; visitPage: number; visitPages: number; breakdown: { device: string; count: number }[]; documents: { title: string; content: string }[] };
+type Props = { username: string; adminAuth: AdminAuthSettings; header: HeaderSettings; visits: VisitRow[]; geoProvider: "local" | "ip2location"; stats: VisitorStats; visitPage: number; visitPages: number; breakdown: { device: string; count: number }[]; documents: { title: string; content: string }[] };
 
 export function AdminMediaConsole({ initialDate }: { initialDate?: string }) {
   return <AdminUploader initialDate={initialDate ? new Date(+new Date(initialDate) - new Date(initialDate).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : undefined} />;
 }
 
-export function AdminConsole({ username, adminAuth, header, visits, stats, visitPage, visitPages, breakdown, documents }: Props) {
+export function AdminConsole({ username, adminAuth, header, visits, geoProvider, stats, visitPage, visitPages, breakdown, documents }: Props) {
   const [tab, setTab] = useState("stats");
   const [fields, setFields] = useState(header);
   const [status, setStatus] = useState("");
@@ -35,7 +35,7 @@ export function AdminConsole({ username, adminAuth, header, visits, stats, visit
   return <>
     <nav className="mb-7 flex flex-wrap gap-2" aria-label="Admin sections">{tabs.map(({ id, name, icon: Icon }) => <button key={id} aria-pressed={tab === id} onClick={() => setTab(id)} className={"flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm " + (tab === id ? "border-[#d4af37]/50 bg-studio-fill/10 text-studio-soft" : "border-white/10 text-white/60")}><Icon className="h-4 w-4" /> {name}</button>)}</nav>
     {tab === "header" ? <section className="rounded-2xl border border-white/10 bg-white/[.03] p-6"><h2 className="font-editorial text-3xl">Make it your archive</h2><form onSubmit={saveHeader} className="mt-6 space-y-5">{(["title", "eyebrow", "description"] as const).map(key => <label key={key} className="block text-sm capitalize text-white/70">{key === "eyebrow" ? "Small label above the title" : key}<input value={fields[key]} required={key === "title"} maxLength={key === "description" ? 1000 : 120} onChange={e => setFields({ ...fields, [key]: e.target.value })} className="mt-2 block w-full rounded-xl border border-white/15 studio-input px-4 py-3 text-white" /></label>)}<button disabled={busy} className="min-h-11 rounded-full bg-studio-fill px-5 text-sm font-semibold text-black disabled:opacity-50">{busy ? "Saving…" : "Save header"}</button><p role="status" className="text-sm text-studio-soft">{status}</p></form></section> : null}
-    {tab === "stats" ? <VisitorStatsPanel visits={visits} stats={stats} breakdown={breakdown} page={visitPage} pages={visitPages} /> : null}
+    {tab === "stats" ? <VisitorStatsPanel visits={visits} geoProvider={geoProvider} stats={stats} breakdown={breakdown} page={visitPage} pages={visitPages} /> : null}
     {tab === "account" ? <><AdminAuthMode settings={adminAuth} />{adminAuth.mode === "cloudflare" ? <details className="rounded-2xl border border-white/10 p-5"><summary className="cursor-pointer text-sm text-white/60">CMS password settings</summary><div className="mt-5"><AdminAccount username={username} /></div></details> : <AdminAccount username={username} />}</> : null}
     {tab === "info" ? <section><h2 className="font-editorial text-3xl">Archive handbook</h2><p className="my-4 text-sm text-white/55">Start, stop, restart, update, back up, migrate, and configure startup at boot. Commands for your local launcher and a future Linux service are documented separately.</p>{documents.map(doc => <details key={doc.title} className="mb-4 rounded-2xl border border-white/10 bg-white/[.03] p-5" open={doc.title === "Operations & server migration"}><summary className="cursor-pointer text-studio-soft">{doc.title}</summary><pre className="mt-5 whitespace-pre-wrap break-words font-sans text-sm leading-7 text-white/75">{doc.content}</pre></details>)}</section> : null}
   </>;

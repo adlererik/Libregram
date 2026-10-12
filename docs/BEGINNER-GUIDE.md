@@ -1,6 +1,6 @@
 # Beginner guide: run your own Archive
 
-By Erik Adler. Stable release: v1.3.0.
+By Erik Adler. Stable release: v1.4.0.
 
 This is your own Instagram-style photo/video website. Your computer or server stores the files and runs the CMS. A computer must stay powered on for other people to reach it. Start locally, add a few memories, then give it a public HTTPS address. You do not need Cloudflare, Google, Apple, or a fingerprint reader to install or sign in: new installations use a CMS username and password.
 
@@ -19,7 +19,7 @@ Sudo may ask for your computer/server password. Typing it shows no characters; p
 
 ```bash
 cd ~
-git clone --branch v1.3.0 https://github.com/adlererik/the-archive.git
+git clone --branch v1.4.0 https://github.com/adlererik/the-archive.git
 cd the-archive
 ```
 
@@ -120,7 +120,7 @@ Your friend or grandmother opens one compact `/s/...` link without signing in. T
 
 ### View visitor history
 
-After publishing the gallery, open **cogwheel → Visitor stats**. See outside visitors' public IPs, country flags, approximate cities, OS/browser, and counts. Local traffic and recognized owner traffic are excluded. Sign in on each browser/address you use to identify it as yours. History stays until you delete it; a trash button removes one visit, and **Delete all visit history** removes all visits after confirmation. See [visitor statistics](VISITOR-STATS.md).
+After publishing the gallery, open **cogwheel → Visitor stats**. See outside visitors' public IPs, country flags, approximate cities, OS/browser, and counts. Local traffic and recognized owner traffic are excluded. Sign in on each browser/address you use to identify it as yours. History stays until you delete it; a trash button removes one visit, and **Delete all visit history** removes all visits after confirmation. With optional free IP2Location.io lookup, open an estimated city on a map and see visible-page duration for new visits. Old durations are not reconstructed. IP map pins cannot show someone’s exact location. See [visitor statistics and free API setup](VISITOR-STATS.md).
 
 ## 8. Make the site start at boot
 
@@ -200,13 +200,13 @@ To upgrade to this release, **stop the site and back it up first**, then run the
 ```bash
 git rev-parse HEAD  # Write down this old revision for rollback.
 git fetch origin --tags
-git checkout v1.3.0
+git checkout v1.4.0
 ./archive install
 export PATH="$PWD/.runtime/node/bin:$PATH"  # If you installed the private Node runtime.
 pnpm db:push
 ```
 
-**v1.3.0 has no new database columns compared with v1.2.0.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./archive build` then `./archive start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
+**v1.4.0 adds optional visitor coordinates, duration, and last-update columns, plus a location-source field with a default for older history. Back up your database before the schema update.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./archive build` then `./archive start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
 
 For future releases, substitute their tag and follow their migration notes. If installed from a ZIP rather than Git, extract the new source into a separate folder and follow the migration instructions instead of running Git commands.
 

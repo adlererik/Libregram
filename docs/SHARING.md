@@ -1,6 +1,6 @@
 # Share a photo, video, or complete presentation
 
-By Erik Adler · v1.3.0.
+By Erik Adler · v1.4.0.
 
 ## Before sending a link
 
