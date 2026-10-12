@@ -56,6 +56,6 @@ Use HTTPS with secure cookies before exposing the archive on a server. Source co
 
 ## Visitor display regions and page title
 
-Visitor stats has small round choices for Western Europe, North America, South America, Asia, and World. Several regional choices can be combined; World shows everything. Visitor counts, device summaries, and history pagination use the same filter, while post/media/heart totals remain archive-wide. This only changes the display; it does not block visits, detect bots, or delete hidden records. Choices are remembered for this administrator browser. See [country definitions and behavior](VISITOR-STATS.md#filter-the-displayed-regions).
+Visitor stats has small round choices for Western Europe, Scandinavia, North America, South America, Asia, and World. Scandinavia includes Denmark, Norway, Sweden, Finland, and Iceland. Several regional choices can be combined; World shows everything. Visitor counts, device summaries, and history pagination use the same filter, while post/media/heart totals remain archive-wide. This only changes the display; it does not block visits, detect bots, or delete hidden records. Choices are remembered for this administrator browser. See [country definitions and behavior](VISITOR-STATS.md#filter-the-displayed-regions).
 
 **Header text → Title** names both the gallery header and browser tab across gallery, Favorites, administration, and shared viewers. Save header to apply the title; the default for a fresh installation is The Archive. Shared link preview descriptions still describe the sent media.

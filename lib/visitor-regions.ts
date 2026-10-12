@@ -1,9 +1,11 @@
 // Country-level display groups, not traffic blocking or bot detection.
 // M49: https://unstats.un.org/unsd/methodology/m49/
 // Western Europe includes the owner's requested Nordic/UK/Irish/southern group;
+// Scandinavia is the owner's five-country group, also included in Western Europe.
 // Asia also recognizes the TW country code returned by GeoIP providers.
 export const VISITOR_REGIONS = [
   { id: "western-europe", label: "Western Europe", countries: "AD AT AX BE CH DE DK ES FI FO FR GB GG GI IE IM IS IT JE LI LU MC MT NL NO PT SE SJ SM VA".split(" ") },
+  { id: "scandinavia", label: "Scandinavia", countries: "DK NO SE FI IS".split(" ") },
   { id: "north-america", label: "North America", countries: "AG AI AW BB BL BM BQ BS BZ CA CR CU CW DM DO GD GL GP GT HN HT JM KN KY LC MF MQ MS MX NI PA PM PR SV SX TC TT US VC VG VI".split(" ") },
   { id: "south-america", label: "South America", countries: "AR BO BR BV CL CO EC FK GF GS GY PE PY SR UY VE".split(" ") },
   { id: "asia", label: "Asia", countries: "AE AF AM AZ BD BH BN BT CN CY GE HK ID IL IN IQ IR JO JP KG KH KP KR KW KZ LA LB LK MM MN MO MV MY NP OM PH PK PS QA SA SG SY TH TJ TL TM TR TW UZ VN YE".split(" ") },

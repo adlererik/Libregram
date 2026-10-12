@@ -2,6 +2,7 @@
 
 ## Unreleased — October 12, 2026
 
+- Add a separate Scandinavia visitor filter for Denmark, Norway, Sweden, Finland, and Iceland; combine it with other regions using the existing saved preference and pagination.
 - Add combinable round visitor-region controls for Western Europe (including Nordic countries), North America, South America, Asia, and World. Apply the selection to counts, device summaries, pagination, and history while preserving all recorded visits.
 - Remember region preferences per administrator browser; World includes unknown/unmapped locations. Regional filtering is display-only and does not block traffic or detect bots.
 - Use the configured Header text Title for browser tabs across gallery, Favorites, administration, and shared viewers. Preserve descriptive shared-link previews and refresh layout metadata after header changes.

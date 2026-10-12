@@ -10,7 +10,7 @@ Statistics show outside visits, distinct browser identities, estimated cities, c
 
 ## Filter the displayed regions
 
-Use the small round choices under **Show visitors from**: **Western Europe**, **North America**, **South America**, **Asia**, or **World**. Select several regions together, such as Western Europe and North America. World resets the selection to all outside visitors, including unknown locations, Africa, Oceania, and other European countries. Removing the final regional choice returns to World.
+Use the small round choices under **Show visitors from**: **Western Europe**, **Scandinavia**, **North America**, **South America**, **Asia**, or **World**. Select several regions together, such as Scandinavia and North America. World resets the selection to all outside visitors, including unknown locations, Africa, Oceania, and other European countries. Removing the final regional choice returns to World.
 
 The choices filter visitor counts, browser-identity/city totals, device summaries, and every history page. Post/media/heart totals still describe the whole archive. Changing the filter returns to history page one; Newer/Older and Refresh keep the selected regions. A harmless first-party `archive_visitor_regions` preference cookie remembers the choice for this administrator browser under `/admin`; it contains only region names, not visitor records or IPs. Another browser can use different choices.
 
@@ -19,6 +19,7 @@ The choices filter visitor counts, browser-identity/city totals, device summarie
 Country groups use [UN M49 geography](https://unstats.un.org/unsd/methodology/m49/) with these documented choices:
 
 - **Western Europe:** Austria, Belgium, France, Germany, Liechtenstein, Luxembourg, Monaco, Netherlands, and Switzerland; plus Denmark, Finland, Iceland, Norway, Sweden, UK/Ireland, Spain, Portugal, Italy, Malta, and nearby territories/microstates (Åland, Andorra, Faroe Islands, Gibraltar, Guernsey, Isle of Man, Jersey, San Marino, Svalbard/Jan Mayen, and Vatican City). This broader gallery group includes the Nordic countries rather than only the narrow UN Western Europe category.
+- **Scandinavia:** Denmark, Norway, Sweden, Finland, and Iceland. These five countries are also included in Western Europe; selecting both does not count a visit twice.
 - **North America:** Northern America, Central America, and the Caribbean, including Canada, USA, Mexico, and Greenland.
 - **South America:** the UN South America group and its territories.
 - **Asia:** the UN Asia group, plus the Taiwan (`TW`) code returned by GeoIP providers.
