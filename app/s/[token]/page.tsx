@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
   const image = preview?.thumbnail || (preview?.mediaType === "IMAGE" ? preview.fileName : null);
   const images = image ? [{ url: new URL(mediaUrl(image), origin).href, alt: title }] : [];
   const url = new URL("/s/" + token, origin).href;
-  return { title, description, robots: { index: false, follow: false }, alternates: { canonical: url }, openGraph: { type: "website", title, description, url, siteName: site.title, images }, twitter: { card: images.length ? "summary_large_image" : "summary", title, description, images: images.map(value => value.url) } };
+  return { title: site.title, description, robots: { index: false, follow: false }, alternates: { canonical: url }, openGraph: { type: "website", title, description, url, siteName: site.title, images }, twitter: { card: images.length ? "summary_large_image" : "summary", title, description, images: images.map(value => value.url) } };
 }
 export default async function SharedPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;

@@ -1,5 +1,12 @@
 # Changelog and development notes
 
+## Unreleased — October 12, 2026
+
+- Add combinable round visitor-region controls for Western Europe (including Nordic countries), North America, South America, Asia, and World. Apply the selection to counts, device summaries, pagination, and history while preserving all recorded visits.
+- Remember region preferences per administrator browser; World includes unknown/unmapped locations. Regional filtering is display-only and does not block traffic or detect bots.
+- Use the configured Header text Title for browser tabs across gallery, Favorites, administration, and shared viewers. Preserve descriptive shared-link previews and refresh layout metadata after header changes.
+- No new database schema or paid service is required.
+
 ## v1.4.0 — October 12, 2026
 
 - Add optional free IP2Location.io IPv4/IPv6 city/region/country estimates and coordinates, with local fallback, 24-hour memory caching, serialized duplicate lookups, and a persistent 900/day request cap.

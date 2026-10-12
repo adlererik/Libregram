@@ -76,7 +76,11 @@ The Theme button is on the wall and Favorites. Media colors are never filtered. 
 
 Fresh setup explicitly selects username/password login and creates unique credentials without Cloudflare. Password login issues a signed HTTP-only session cookie; optional configured identity login is described in [Administration](ADMIN.md). Change both username/password in Admin. Visitor-facing pages do not show editing tools without a valid session.
 
+The browser tab/page title follows **Header text → Title**, including gallery, Favorites, administration, and shared viewers. Link previews retain their media/presentation descriptions.
+
 The admin-only cogwheel at the right end of the gallery icon row opens settings: visitor history, gallery title/eyebrow/introduction, login settings, and Info & documentation. The square-plus opens the separate **A new chapter** media uploader. The Info panel contains the included installation, feature, editing, casting, and operation guides.
+
+Region choices can show Western Europe, North America, South America, Asia, or World, with several regions combined. Visitor counts, device summaries, and paginated history follow the selection; excluded regions remain recorded. This is display filtering, not traffic blocking or bot detection. The administrator browser remembers its choice.
 
 Statistics include visits, collection counts/hearts, IPv4/IPv6 addresses, estimated city/country with flags, device, OS icons, browser, and visible-page duration. Optional free IP2Location.io lookup uses caching, a daily cap, and a local fallback; historical estimates can be refreshed. A small map link opens estimated coordinates in Apple Maps or Google Maps according to the administrator device. IPs are visible only to the administrator. Local addresses and recognized administrator browsers/IPs are excluded, including matching historical rows. Sign in on a new browser/address to identify it as yours. Location is IP-derived, not GPS, and can be wrong or missing. History remains until manually deleted, with individual/all-record deletion and paged access to older records. The visitor privacy page describes this behavior. Administrative statistics are not shipped with source releases.
 

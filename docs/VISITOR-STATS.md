@@ -8,6 +8,23 @@ Sign in, then open **cogwheel at the far right of the gallery icon row → Visit
 
 Statistics show outside visits, distinct browser identities, estimated cities, collection/media/heart counts, and device breakdowns. History shows IPv4/IPv6 connection IP, country flag/name, estimated city/region, OS icon, browser/device, visit time, estimated visible stay, and browser/referrer details. Older history is paginated in groups of 50. Refresh statistics to see incoming duration or location updates.
 
+## Filter the displayed regions
+
+Use the small round choices under **Show visitors from**: **Western Europe**, **North America**, **South America**, **Asia**, or **World**. Select several regions together, such as Western Europe and North America. World resets the selection to all outside visitors, including unknown locations, Africa, Oceania, and other European countries. Removing the final regional choice returns to World.
+
+The choices filter visitor counts, browser-identity/city totals, device summaries, and every history page. Post/media/heart totals still describe the whole archive. Changing the filter returns to history page one; Newer/Older and Refresh keep the selected regions. A harmless first-party `archive_visitor_regions` preference cookie remembers the choice for this administrator browser under `/admin`; it contains only region names, not visitor records or IPs. Another browser can use different choices.
+
+**This is a display filter.** It neither blocks traffic nor detects bots. Visits from hidden countries continue to be recorded and can be viewed by choosing World. Manual **Delete all visit history** still deletes the entire history, including hidden regions, after explicit confirmation.
+
+Country groups use [UN M49 geography](https://unstats.un.org/unsd/methodology/m49/) with these documented choices:
+
+- **Western Europe:** Austria, Belgium, France, Germany, Liechtenstein, Luxembourg, Monaco, Netherlands, and Switzerland; plus Denmark, Finland, Iceland, Norway, Sweden, UK/Ireland, Spain, Portugal, Italy, Malta, and nearby territories/microstates (Åland, Andorra, Faroe Islands, Gibraltar, Guernsey, Isle of Man, Jersey, San Marino, Svalbard/Jan Mayen, and Vatican City). This broader gallery group includes the Nordic countries rather than only the narrow UN Western Europe category.
+- **North America:** Northern America, Central America, and the Caribbean, including Canada, USA, Mexico, and Greenland.
+- **South America:** the UN South America group and its territories.
+- **Asia:** the UN Asia group, plus the Taiwan (`TW`) code returned by GeoIP providers.
+
+These are country-level groups based on each record’s stored country code. Unknown/unavailable locations appear only under World. IP location errors can place a visit in the wrong group; refreshing the estimate can change where it appears. This does not label a country or a visitor as automated traffic.
+
 ## Enable free IP2Location.io
 
 Fresh installations use the local GeoIP database by default. No outside lookup account is needed. To enable the API:
