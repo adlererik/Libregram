@@ -1,6 +1,6 @@
 # Visitor statistics, locations, and persistent history
 
-By Erik Adler · v1.4.0.
+By Erik Adler · v1.5.0.
 
 ## Find the statistics
 
@@ -32,7 +32,7 @@ Fresh installations use the local GeoIP database by default. No outside lookup a
 
 1. Back up your private database and settings, then upgrade the schema and build as described in [Public setup](PUBLIC-SETUP.md#update-the-application).
 2. Edit your private `.env.local`; set `VISITOR_GEO_PROVIDER="ip2location"`. Keep the rest of that file, including your existing credentials, unchanged.
-3. Restart the app with `./archive restart`, or restart your systemd service. This is a server setting; never put an API key in a `NEXT_PUBLIC_` variable.
+3. Restart the app with `./libregram restart`, or restart your systemd service. This is a server setting; never put an API key in a `NEXT_PUBLIC_` variable.
 4. Open Visitor stats. New outside visits are enriched automatically. Choose **Update locations on this page** to update up to 50 existing records; go to Older and repeat for earlier pages.
 
 **The keyless API is free and needs no registration or payment card.** As of October 12, 2026, [IP2Location.io pricing](https://www.ip2location.io/pricing) allows 1,000 keyless requests/day. An optional free account provides 50,000 requests/month; if you choose that account, add `IP2LOCATION_API_KEY="your-free-key"` privately. The API supports [IPv4 and IPv6](https://www.ip2location.io/ip2location-documentation).
@@ -41,7 +41,7 @@ This implementation caps requests at **900 per UTC day**, below both allowances 
 
 There is a three-second external request timeout. New visits start with a local estimate and are enriched in the background, so gallery rendering does not wait for the API. Missing results, timeouts, provider rate limits, or the local daily cap use the local database. Historical refresh keeps the previous estimate if the API cannot update it. No paid requests, automatic upgrades, or overage billing are enabled. The free service stops at its quota rather than charging overages. Ordinary server/Internet/storage costs remain yours. Map links use ordinary URLs, with no Maps API subscription.
 
-The free/keyless provider requires visible attribution. The enabled gallery, privacy page, and admin statistics say: **The Archive uses [IP2Location.io IP geolocation](https://www.ip2location.io) web service.** Keep this visible credit if you customize those pages. Set `VISITOR_GEO_PROVIDER="local"` and restart to return to local-only lookup.
+The free/keyless provider requires visible attribution. The enabled gallery, privacy page, and admin statistics say: **Libregram uses [IP2Location.io IP geolocation](https://www.ip2location.io) web service.** Keep this visible credit if you customize those pages. Set `VISITOR_GEO_PROVIDER="local"` and restart to return to local-only lookup.
 
 ## Map links and accuracy
 

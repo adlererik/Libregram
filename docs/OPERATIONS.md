@@ -9,13 +9,13 @@ Start with the [beginner walkthrough](BEGINNER-GUIDE.md). The [public setup refe
 Run these in the project folder. Keep the start terminal open:
 
 ```bash
-./archive start
-./archive status
-./archive stop
-./archive restart
+./libregram start
+./libregram status
+./libregram stop
+./libregram restart
 ```
 
-Rebuild after source or public configuration changes with `./archive build`. The default port is 3000, bound to all network interfaces. Port conflicts produce an error.
+Rebuild after source or public configuration changes with `./libregram build`. The default port is 3000, bound to all network interfaces. Port conflicts produce an error.
 
 ## Debian boot service
 
@@ -23,18 +23,18 @@ After a successful initial setup/build, install the service from the checkout:
 
 ```bash
 sudo bash deploy/setup-debian-root.sh "$USER"
-systemctl is-enabled "the-archive@$USER"
-systemctl is-active "the-archive@$USER"
+systemctl is-enabled "libregram@$USER"
+systemctl is-active "libregram@$USER"
 ```
 
 The installer resolves the actual checkout and account, supports a private `.runtime/node/bin/node` or system Node 24+, installs FFmpeg/Git prerequisites, and enables boot startup. It does not grant sudo privileges. Use a checkout path without spaces, quotes, backslashes, or percent signs.
 
 ```bash
-sudo systemctl stop "the-archive@$USER"
-sudo systemctl start "the-archive@$USER"
-sudo systemctl restart "the-archive@$USER"
-sudo systemctl status "the-archive@$USER" --no-pager
-sudo journalctl -u "the-archive@$USER" -n 100 --no-pager
+sudo systemctl stop "libregram@$USER"
+sudo systemctl start "libregram@$USER"
+sudo systemctl restart "libregram@$USER"
+sudo systemctl status "libregram@$USER" --no-pager
+sudo journalctl -u "libregram@$USER" -n 100 --no-pager
 ```
 
 Use the boot service or foreground launcher to own the server. Do not start two copies on port 3000. Enabled services start after a reboot; an application restart does not require a machine reboot.
@@ -45,7 +45,7 @@ Stop the application before copying SQLite, or use SQLite's online backup facili
 
 ### Copy a private backup on Debian/Ubuntu
 
-Stop the foreground launcher with `./archive stop`, or the boot service with `sudo systemctl stop "the-archive@$USER"`. Then run this from the project folder:
+Stop the foreground launcher with `./libregram stop`, or the boot service with `sudo systemctl stop "libregram@$USER"`. Then run this from the project folder:
 
 ```bash
 archive_backup="$HOME/Archive-backups/$(date +%Y%m%d-%H%M%S)"
@@ -60,9 +60,9 @@ done
 chmod -R go-rwx "$archive_backup"
 ```
 
-Check that the copy finished without errors and contains the expected files, then restart with `./archive start` or `sudo systemctl start "the-archive@$USER"`. Store a second private copy on a separate disk. These backup files contain your photos, passwords, and visitor information; never upload them to a public repository.
+Check that the copy finished without errors and contains the expected files, then restart with `./libregram start` or `sudo systemctl start "libregram@$USER"`. Store a second private copy on a separate disk. These backup files contain your photos, passwords, and visitor information; never upload them to a public repository.
 
-For an optional named Cloudflare Tunnel, separately preserve its private `/etc/the-archive-tunnel/` configuration through your administrator's backup process. Changing the public hostname can break already sent URLs. See [Sharing](SHARING.md) before a migration. Read [Administration](ADMIN.md) for password or identity-mode recovery.
+For an optional named Cloudflare Tunnel, separately preserve its private `/etc/libregram-tunnel/` configuration through your administrator's backup process. Changing the public hostname can break already sent URLs. See [Sharing](SHARING.md) before a migration. Read [Administration](ADMIN.md) for password or identity-mode recovery.
 
 ## Release upgrades
 
@@ -71,7 +71,7 @@ Back up first and record the current revision. Substitute the desired release ta
 ```bash
 git fetch origin --tags
 git checkout v1.4.0
-./archive install
+./libregram install
 ```
 
 v1.4.0 adds optional visitor coordinates, duration and last-update columns plus a default location-source label. Back up SQLite, then apply `pnpm db:push` before building. Older visits retain their history; their duration remains unknown. Upgrades from v1.1.0 or earlier also apply the optional soundtrack fields from v1.2.0. Never accept a destructive reset as an installation fix. Existing credentials and login mode are preserved; only fresh installations default to password login.
@@ -84,8 +84,8 @@ sudo bash deploy/rebuild-archive-root.sh "$USER"
 
 This stops the service, preserves its previous production build, compiles as the owning user, restarts, and checks readiness. Build/start failure restores the previous build. This is a build fallback; database and source rollback require your private backup and recorded revision. Dependency installation and any approved schema changes must already be complete.
 
-For the foreground launcher: stop, build, and start with `./archive stop`, `./archive build`, and `./archive start`. `./archive update` changes dependencies and is a developer operation, not the normal release upgrade command.
+For the foreground launcher: stop, build, and start with `./libregram stop`, `./libregram build`, and `./libregram start`. `./libregram update` changes dependencies and is a developer operation, not the normal release upgrade command.
 
 ## Public HTTPS
 
-Use an HTTPS reverse proxy or [Cloudflare Tunnel](CLOUDFLARE.md). Configure `SESSION_COOKIE_SECURE=true` and trust proxy headers only from your trusted loopback proxy. Preserve media byte-range and CORS headers. A TV needs a reachable public media URL; its localhost is not your server. The tunnel boot service is managed separately with `sudo systemctl restart the-archive-tunnel`.
+Use an HTTPS reverse proxy or [Cloudflare Tunnel](CLOUDFLARE.md). Configure `SESSION_COOKIE_SECURE=true` and trust proxy headers only from your trusted loopback proxy. Preserve media byte-range and CORS headers. A TV needs a reachable public media URL; its localhost is not your server. The tunnel boot service is managed separately with `sudo systemctl restart libregram-tunnel`.

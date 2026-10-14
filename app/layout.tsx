@@ -15,7 +15,7 @@ const serif = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "6
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   const header = await getHeader();
-  return { title: header.title, description: header.description };
+  return { applicationName: "Libregram", title: header.title, description: header.description };
 }
 
 export const viewport: Viewport = {

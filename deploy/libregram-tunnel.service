@@ -1,0 +1,25 @@
+[Unit]
+Description=Libregram Cloudflare HTTPS tunnel
+Wants=network-online.target
+After=network-online.target libregram@@ARCHIVE_USER@.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=@ARCHIVE_USER@
+EnvironmentFile=/etc/libregram-tunnel/tunnel.env
+Environment=HOME=/var/lib/libregram-tunnel
+WorkingDirectory=/var/lib/libregram-tunnel
+StateDirectory=libregram-tunnel
+ExecStart=/usr/local/libexec/libregram-tunnel-run
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

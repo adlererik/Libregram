@@ -1,4 +1,4 @@
-# The Archive v1.1.0 — Your self-hosted Instagram alternative
+# Libregram v1.1.0 — Your self-hosted Instagram alternative
 
 By **Erik Adler**. MIT-licensed public source release.
 
@@ -38,8 +38,8 @@ Use the [beginner guide](BEGINNER-GUIDE.md) if you are new to servers. The first
 Once those tools are installed:
 
 ```bash
-git clone --branch v1.1.0 https://github.com/adlererik/the-archive.git
-cd the-archive
+git clone --branch v1.1.0 https://github.com/adlererik/libregram.git
+cd libregram
 ./archive setup
 ./archive start
 ```

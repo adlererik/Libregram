@@ -4,9 +4,9 @@ By Erik Adler.
 
 ## Configuration
 
-Run `./archive setup` to generate a unique admin password and a session secret. Fresh installations explicitly use CMS username/password login without Cloudflare. There are no usable shared login credentials in the release. A session secret must have at least 32 characters; the server rejects the template's placeholder. Keep `.env`, `.env.local`, and tunnel tokens private. Use HTTPS with `SESSION_COOKIE_SECURE=true` for public administration. Enable `TRUST_PROXY=true` only behind the intended loopback reverse proxy.
+Run `./libregram setup` to generate a unique admin password and a session secret. Fresh installations explicitly use CMS username/password login without Cloudflare. There are no usable shared login credentials in the release. A session secret must have at least 32 characters; the server rejects the template's placeholder. Keep `.env`, `.env.local`, and tunnel tokens private. Use HTTPS with `SESSION_COOKIE_SECURE=true` for public administration. Enable `TRUST_PROXY=true` only behind the intended loopback reverse proxy.
 
-Admin account changes are stored as password hashes in SQLite; existing database account settings take precedence over environment bootstrap values. `./archive reset-login` is a local recovery command. Rotate credentials if they have been exposed, and back up private files separately.
+Admin account changes are stored as password hashes in SQLite; existing database account settings take precedence over environment bootstrap values. `./libregram reset-login` is a local recovery command. Rotate credentials if they have been exposed, and back up private files separately.
 
 ## Public and private content
 

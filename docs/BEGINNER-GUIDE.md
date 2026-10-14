@@ -1,6 +1,6 @@
-# Beginner guide: run your own Archive
+# Beginner guide: run your own Libregram
 
-By Erik Adler. Stable release: v1.4.0.
+By Erik Adler. Stable release: v1.5.0.
 
 This is your own Instagram-style photo/video website. Your computer or server stores the files and runs the CMS. A computer must stay powered on for other people to reach it. Start locally, add a few memories, then give it a public HTTPS address. You do not need Cloudflare, Google, Apple, or a fingerprint reader to install or sign in: new installations use a CMS username and password.
 
@@ -19,11 +19,11 @@ Sudo may ask for your computer/server password. Typing it shows no characters; p
 
 ```bash
 cd ~
-git clone --branch v1.4.0 https://github.com/adlererik/the-archive.git
-cd the-archive
+git clone --branch v1.5.0 https://github.com/adlererik/libregram.git
+cd libregram
 ```
 
-The project is now in a folder called `the-archive` in your home directory. Downloading a release ZIP and extracting it is an alternative; open Terminal inside that extracted folder and continue below.
+The project is now in a folder called `libregram` in your home directory. Downloading a release ZIP and extracting it is an alternative; open Terminal inside that extracted folder and continue below.
 
 ## 3. Install Node.js 24 and pnpm
 
@@ -54,12 +54,12 @@ ARCHIVE_NODE_SETUP
 export PATH="$PWD/.runtime/node/bin:$PATH"
 ```
 
-Stop if a download or checksum check fails. Official reference: [Node.js downloads](https://nodejs.org/en/download). In a new terminal, return to the project folder and run `export PATH="$PWD/.runtime/node/bin:$PATH"` before using pnpm directly. The `./archive` commands find the private Node runtime automatically.
+Stop if a download or checksum check fails. Official reference: [Node.js downloads](https://nodejs.org/en/download). In a new terminal, return to the project folder and run `export PATH="$PWD/.runtime/node/bin:$PATH"` before using pnpm directly. The `./libregram` commands find the private Node runtime automatically.
 
 ## 4. Set up the empty gallery
 
 ```bash
-./archive setup
+./libregram setup
 ```
 
 This installs the pinned dependencies, creates your private settings and an empty database, and compiles the site. It can take several minutes. Wait until it finishes successfully.
@@ -72,12 +72,12 @@ sed -n '/^ADMIN_PASSWORD=/p' .env.local
 
 Your username is **admin**. Use the text between the quotation marks as the password. Keep it private and save it in your password manager; do not paste it into a public issue or chat. Setup generates a different password and session secret for every installation and sets `ADMIN_AUTH_MODE="password"`. The example settings file is a reference, not your generated password.
 
-For age labels, edit `NEXT_PUBLIC_BIRTH_DATE` in `.env.local` to the relevant birthday in `YYYY-MM-DD` format before the next build. Run `./archive build` after changing this setting.
+For age labels, edit `NEXT_PUBLIC_BIRTH_DATE` in `.env.local` to the relevant birthday in `YYYY-MM-DD` format before the next build. Run `./libregram build` after changing this setting.
 
 ## 5. Start and open your site
 
 ```bash
-./archive start
+./libregram start
 ```
 
 Keep this terminal open. On the same computer, open **http://localhost:3000** in your browser. If installing on a server, use its local network address with `:3000`, for example `http://192.168.1.50:3000`. Use the address printed by the launcher; localhost on your phone means the phone itself.
@@ -127,13 +127,13 @@ After publishing the gallery, open **cogwheel → Visitor stats**. See outside v
 Stop the foreground launcher from a second terminal in the project folder:
 
 ```bash
-./archive stop
+./libregram stop
 sudo bash deploy/setup-debian-root.sh "$USER"
-systemctl is-enabled "the-archive@$USER"
-systemctl is-active "the-archive@$USER"
+systemctl is-enabled "libregram@$USER"
+systemctl is-active "libregram@$USER"
 ```
 
-Both checks should print `enabled` and `active`. The service runs as your normal account and starts after a reboot, even without an SSH login. Keep the checkout in a simple path such as your home directory's `the-archive` folder. Use this service instead of also running `./archive start`.
+Both checks should print `enabled` and `active`. The service runs as your normal account and starts after a reboot, even without an SSH login. Keep the checkout in a simple path such as your home directory's `libregram` folder. Use this service instead of also running `./libregram start`.
 
 ## 9. Give it a public HTTPS address
 
@@ -148,7 +148,7 @@ The script enables the tunnel boot service and prints a temporary HTTPS address.
 For a permanent name:
 
 1. Buy a domain or add your existing domain to Cloudflare.
-2. Open **Networking → Tunnels → Create Tunnel** and name it `the-archive`.
+2. Open **Networking → Tunnels → Create Tunnel** and name it `libregram`.
 3. Select your server environment and find the tunnel token in the install command.
 4. In the project folder, run `sudo bash deploy/use-named-cloudflare-tunnel.sh` and paste **only the token** at its hidden prompt.
 5. When the dashboard shows **Healthy**, open **Routes → Add route → Published application**.
@@ -174,22 +174,22 @@ The TV receives selected media, not the webpage. It must be able to download tha
 For the foreground launcher, use a second terminal in the project folder:
 
 ```bash
-./archive status
-./archive stop
-./archive restart
+./libregram status
+./libregram stop
+./libregram restart
 ```
 
 For the boot service:
 
 ```bash
-sudo systemctl stop "the-archive@$USER"
-sudo systemctl start "the-archive@$USER"
-sudo systemctl restart "the-archive@$USER"
-sudo systemctl status "the-archive@$USER" --no-pager
-sudo journalctl -u "the-archive@$USER" -n 50 --no-pager
+sudo systemctl stop "libregram@$USER"
+sudo systemctl start "libregram@$USER"
+sudo systemctl restart "libregram@$USER"
+sudo systemctl status "libregram@$USER" --no-pager
+sudo journalctl -u "libregram@$USER" -n 50 --no-pager
 ```
 
-The tunnel has separate controls: `sudo systemctl restart the-archive-tunnel`. `sudo reboot` reboots the machine; enabled services return automatically. Do not reboot while other work on that machine needs to remain running.
+The tunnel has separate controls: `sudo systemctl restart libregram-tunnel`. `sudo reboot` reboots the machine; enabled services return automatically. Do not reboot while other work on that machine needs to remain running.
 
 ## 12. Back up, upgrade, and move servers
 
@@ -200,13 +200,13 @@ To upgrade to this release, **stop the site and back it up first**, then run the
 ```bash
 git rev-parse HEAD  # Write down this old revision for rollback.
 git fetch origin --tags
-git checkout v1.4.0
-./archive install
+git checkout v1.5.0
+./libregram install
 export PATH="$PWD/.runtime/node/bin:$PATH"  # If you installed the private Node runtime.
 pnpm db:push
 ```
 
-**v1.4.0 adds optional visitor coordinates, duration, and last-update columns, plus a location-source field with a default for older history. Back up your database before the schema update.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./archive build` then `./archive start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
+**v1.5.0 adds optional visitor coordinates, duration, and last-update columns, plus a location-source field with a default for older history. Back up your database before the schema update.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./libregram build` then `./libregram start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
 
 For future releases, substitute their tag and follow their migration notes. If installed from a ZIP rather than Git, extract the new source into a separate folder and follow the migration instructions instead of running Git commands.
 
@@ -222,7 +222,7 @@ Keep the default username/password mode for the simplest installation. If you la
 - **Not found on another phone?** Keep the server running, use its LAN address on the same Wi-Fi, and check the machine's firewall. Use HTTPS for public access and casting.
 - **No sound yet?** Browsers can require one tap before audible playback; also check device volume.
 - **Cannot sign in after enabling HTTPS?** Use the HTTPS domain. Secure cookies do not work on an ordinary HTTP LAN address.
-- **Lost your password?** On your server, edit `ADMIN_USERNAME` and `ADMIN_PASSWORD` in private `.env.local`, then run `./archive reset-login` from the project folder. [Recovery instructions](ADMIN.md) explain existing-account behavior and optional Cloudflare mode recovery.
+- **Lost your password?** On your server, edit `ADMIN_USERNAME` and `ADMIN_PASSWORD` in private `.env.local`, then run `./libregram reset-login` from the project folder. [Recovery instructions](ADMIN.md) explain existing-account behavior and optional Cloudflare mode recovery.
 - **Will a shared link keep working?** Keep the server, hostname, source media, database, and `.runtime/shared-links/` available. A temporary tunnel address changes after restart.
 - **What does it cost?** The CMS and its sharing/casting code require no paid subscription. Your server, disk space, electricity, Internet, domain, and optional receiver/services can cost money.
 - **Can I put this in GitHub?** Publish source only. Never add uploads, SQLite files, private `.env` files, backup archives, or tunnel tokens.

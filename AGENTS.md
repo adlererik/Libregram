@@ -1,10 +1,10 @@
-# The-Archive — Codex project guidance
+# Libregram — Codex project guidance
 
 ## What this project is
 
-The Archive is Erik Adler's self-hosted photo/video gallery, preservation suite, and CMS. He developed it to own his memories beyond Instagram's walled garden; in his experience Pixelfed was too limited and clunky for his needs. It replaces a personal gallery workflow, not a full social network.
+Libregram is Erik Adler's self-hosted photo/video gallery, preservation suite, and CMS. It is a free, open-source Instagram alternative focused on sharing without a walled garden or media lock-in, including single-URL media compilations, AirPlay, and Google Cast. It replaces a personal gallery workflow, not a full social network.
 
-Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.4.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, and verification.
+Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.5.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, and verification.
 
 ## Architecture and behavior to preserve
 
@@ -25,6 +25,6 @@ Use the locked dependencies and supported Node.js version. v1.2.0 adds optional 
 
 ## Working here
 
-Use ./archive setup only for a fresh installation. See docs/PUBLIC-SETUP.md for upgrades and deployment. Default port is 3000; do not create a second site on 3001 to avoid a conflict. Rebuild before restarting source changes. A systemd build rollback does not roll back SQLite or Git.
+Use ./libregram setup only for a fresh installation. See docs/PUBLIC-SETUP.md for upgrades and deployment. Default port is 3000; do not create a second site on 3001 to avoid a conflict. Rebuild before restarting source changes. A systemd build rollback does not roll back SQLite or Git.
 
 When present, work/project/CODEX-CONTEXT.md contains local deployment context. It is private, ignored, and must not enter public source/release packages. Do not infer that a local build is deployed to the server. Report verified facts and any remaining real-device limitations.

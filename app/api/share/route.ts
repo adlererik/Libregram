@@ -5,7 +5,7 @@ import { visitor } from "@/lib/visitor";
 const attempts = new Map<string, { count: number; start: number }>();
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin");
-  try { if (!origin || new URL(origin).host !== request.headers.get("host")) return NextResponse.json({ error: "Open the archive to create a link." }, { status: 403 }); }
+  try { if (!origin || new URL(origin).host !== request.headers.get("host")) return NextResponse.json({ error: "Open Libregram to create a link." }, { status: 403 }); }
   catch { return NextResponse.json({ error: "Invalid origin." }, { status: 403 }); }
   if (Number(request.headers.get("content-length")) > 150000) return NextResponse.json({ error: "This selection is too large." }, { status: 413 });
   const text = await request.text();

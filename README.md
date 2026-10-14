@@ -1,18 +1,20 @@
-# The Archive
+# Libregram
 
-### Your own Instagram replacement: photos, videos, and memories on your server
+### A free Instagram alternative. Your media, without the walled garden.
 
-By **Erik Adler** · Latest release **v1.4.0** · [MIT license](LICENSE)
+By **Erik Adler** · Latest release **v1.5.0** · [MIT license](LICENSE)
 
-Give your memories a home you control. The Archive combines an Instagram-style timeline, a cinematic gallery, a built-in CMS, and presentations you can share with **one short URL**. Keep your original photos and videos on your own server. Browse them on a phone, send a collection to family, or play it on a TV with **Google Cast or AirPlay**.
+**Libregram is a free, open-source Instagram alternative focused on sharing your photos and videos without media lock-in.** Run it on your own server, keep your originals, and move your collection whenever you want. An Instagram-style timeline, a cinematic gallery, and a built-in CMS make it easy to publish and enjoy your memories.
+
+**Share a compilation of photos and videos with one short URL**, send an individual memory by email or message, or play your media on a TV with **AirPlay or Google Cast**. Friends and family can open shared links without creating an account or installing an app.
 
 **New installations use a normal CMS username and password. No Cloudflare account, fingerprint reader, or social login is needed to install, clone, or sign in.** Optional Cloudflare sign-in is an owner's later choice.
 
-## Why I built it — and why it suits my memories better
+## Why Libregram exists
 
 By Erik Adler:
 
-> I wanted a home for my memories that I could own and run myself. Instagram is a walled garden. I tried Pixelfed, but in my experience it was too limited, felt clunky, and did not work well for what I needed. I built The Archive to preserve my original photos and videos, present them beautifully, find older memories quickly, and share them on a TV without depending on a social platform.
+> I wanted Instagram-style sharing without the walled garden: a home for my memories that I could own and run myself. I built Libregram to preserve original photos and videos, present them beautifully, and share a whole story with one link or on a TV. Your media should stay yours, with no platform lock-in.
 
 For this personal sharing workflow, the advantages are concrete:
 
@@ -24,7 +26,7 @@ For this personal sharing workflow, the advantages are concrete:
 - **Curate beyond an upload feed:** backdate posts, reorder carousel items, add soundtracks, and choose a gallery theme.
 - **Keep administration together:** a discreet login icon and a settings cogwheel give you media tools, visitor history, and the handbook.
 
-The comparison above describes Erik's experience and priorities. This project focuses on a personal gallery and CMS. It does not provide follower feeds, direct messaging, or a federated social network.
+Libregram focuses on personal media sharing and a built-in CMS. It provides no follower feeds, direct messaging, or federated social network. The software is free; you supply the server, storage, Internet connection, and any domain or receiver hardware.
 
 ## Project screenshots
 
@@ -62,14 +64,15 @@ Desktop
 
 **New to servers? Follow the [beginner guide](docs/BEGINNER-GUIDE.md).** It explains the terminal commands, first login, first upload, sharing, TV playback, public HTTPS, startup at boot, backups, and recovery.
 
-- [Download v1.4.0](https://github.com/adlererik/the-archive/releases/tag/v1.4.0)
+- [Download v1.5.0](https://github.com/adlererik/libregram/releases/tag/v1.5.0)
 - [All features](docs/FEATURES.md)
 - [Installation and migration reference](docs/PUBLIC-SETUP.md)
 - [Sharing, presentations, and casting](docs/FAVORITES-CASTING.md)
 - [Administration and visitor history](docs/ADMIN.md)
-- [Release notes](docs/RELEASE-v1.4.0.md)
+- [Release notes](docs/RELEASE-v1.5.0.md)
+- [Upgrade an existing installation](docs/RENAMING.md)
 
-## What makes The Archive useful
+## What makes Libregram useful
 
 | Feature | What you can do |
 | --- | --- |
@@ -110,10 +113,10 @@ Supported walkthrough: **Debian/Ubuntu Linux**, a normal user with sudo, **Node.
 Once those tools are installed:
 
 ```bash
-git clone --branch v1.4.0 https://github.com/adlererik/the-archive.git
-cd the-archive
-./archive setup
-./archive start
+git clone --branch v1.5.0 https://github.com/adlererik/libregram.git
+cd libregram
+./libregram setup
+./libregram start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) on that computer, or the server's printed LAN address from another device. Setup installs locked dependencies, creates an **empty database**, generates a unique password and session secret, explicitly selects **password login**, and builds the app. Username: **admin**. Read your generated password privately from `.env.local`, then use the top-right lock or `/admin/login`. Store the login in your password manager.
@@ -135,11 +138,11 @@ A link looks like `https://your-domain.example/s/AbCdEf0123456789`. It keeps the
 ## Run and maintain it
 
 ```bash
-./archive status
-./archive stop
-./archive build
-./archive start
-./archive restart
+./libregram status
+./libregram stop
+./libregram build
+./libregram start
+./libregram restart
 ```
 
 Run these inside the project folder. A foreground server needs its terminal to remain open. The default listener is `0.0.0.0:3000`; a busy port gives an error. For reliable startup after reboot, follow the [boot service guide](docs/BEGINNER-GUIDE.md#8-make-the-site-start-at-boot). Back up SQLite, uploads, private environment files, and private runtime settings/shared links as described in [Operations](docs/OPERATIONS.md).
@@ -170,4 +173,4 @@ IP2Location.io currently allows 1,000 keyless requests/day or 50,000/month with 
 
 The software is **MIT licensed** and requires no paid sharing API, link shortener, casting registration, or CMS subscription. Hosting, storage, electricity, Internet service, domain registration/renewal, and receiver hardware are your own costs. Optional Cloudflare services have their own plan limits; the standard password login works without them. See [optional identity setup and current plan references](docs/ADMIN.md).
 
-Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.4.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.
+Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.5.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.

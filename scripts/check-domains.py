@@ -10,7 +10,7 @@ import urllib.error
 import urllib.request
 
 def fetch(url):
-    return urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "The-Archive-domain-research/1.0", "Accept": "application/rdap+json, application/json"}), timeout=25)
+    return urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Libregram-domain-research/1.0", "Accept": "application/rdap+json, application/json"}), timeout=25)
 
 bootstrap = json.load(fetch("https://data.iana.org/rdap/dns.json"))
 endpoints = {tld: urls[0] for tlds, urls in bootstrap["services"] for tld in tlds}

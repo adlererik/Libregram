@@ -1,6 +1,12 @@
 # Verification notes
 
-By Erik Adler. October 9, 2026.
+By Erik Adler. Historical checks began October 9, 2026.
+
+## Libregram v1.5.0 build and rename evidence — October 14, 2026
+
+Local and isolated Debian production builds completed with TypeScript checking. All nine README image elements match the previous source exactly. Git history, current source, and source-only downloads were audited for private data. No fresh-install, browser interaction, or physical receiver tests were run for this rename. Server activation requires the administrator's sudo password; staging is not a live deployment. The historical checks below describe earlier versions.
+
+New service templates use Libregram names; the historical migrations below used their earlier deployment identifiers.
 
 ## Verified locally
 
@@ -53,7 +59,7 @@ The feature's staged Debian production build also completed with TypeScript chec
 
 ## Public release v1.1.0 — October 10, 2026
 
-A fresh copy of the staged public source was installed with `./archive setup`, without copying an existing environment, database, or uploads. Dependency installation, Prisma schema creation, and the Next.js 15.5.27 production build completed successfully, including TypeScript checks.
+A fresh copy of the staged public source was installed with `./libregram setup`, without copying an existing environment, database, or uploads. Dependency installation, Prisma schema creation, and the Next.js 15.5.27 production build completed successfully, including TypeScript checks.
 
 The fresh production server was started on an isolated loopback port. The gallery, login page, favorites page, posts API, and Cast configuration API returned HTTP 200. The posts API was empty; SQLite contained zero posts and zero media items. The generated environment file had mode 0600. Login with the newly generated credentials succeeded, issued an HTTP-only session cookie, and opened Admin with the beginner and feature guides available.
 
@@ -87,7 +93,7 @@ The corrective update’s separate Debian production build completed successfull
 
 ## Public v1.2.0 source release — October 10, 2026
 
-A separate installation extracted only tracked source and ran `./archive setup` with locked dependencies. The production compilation, TypeScript checks, static generation, and build tracing completed successfully. Its production launcher started on an isolated verification port so the existing gallery remained available.
+A separate installation extracted only tracked source and ran `./libregram setup` with locked dependencies. The production compilation, TypeScript checks, static generation, and build tracing completed successfully. Its production launcher started on an isolated verification port so the existing gallery remained available.
 
 Before browsing, the new database had zero posts, media items, and visits, and uploads contained no files beyond `.gitkeep`. Setup generated credentials distinct from the live installation and environment files with mode 0600. Gallery, Favorites, privacy, login, posts, and Cast configuration returned HTTP 200. The posts and Favorites responses were empty. Initial admin login succeeded with a signed HTTP-only SameSite cookie, and authenticated Admin rendered the included feature guide. No private credential value is recorded here.
 
@@ -97,7 +103,7 @@ These checks establish clean installation and source-package health. They do not
 
 ## Public v1.3.0 source release — October 10, 2026
 
-A separate clean directory was extracted from the audited Git source candidate and ran `./archive setup` with Node.js 24 and the locked dependencies. Production compilation, TypeScript validation, static generation, and build tracing completed successfully. The production server then ran on an isolated verification port; the existing gallery was left running.
+A separate clean directory was extracted from the audited Git source candidate and ran `./libregram setup` with Node.js 24 and the locked dependencies. Production compilation, TypeScript validation, static generation, and build tracing completed successfully. The production server then ran on an isolated verification port; the existing gallery was left running.
 
 The clean setup explicitly generated `ADMIN_AUTH_MODE="password"`, a unique password/session secret distinct from the private installation, and environment files with permissions 0600. No Cloudflare configuration or saved identity mode was present. SQLite contained zero posts, media items, and visits; uploads contained only `.gitkeep`. The same counts remained after the local checks.
 

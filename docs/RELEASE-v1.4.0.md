@@ -1,4 +1,4 @@
-# The Archive v1.4.0
+# Libregram v1.4.0
 
 By Erik Adler · October 12, 2026 · MIT license.
 
@@ -25,7 +25,7 @@ Existing account credentials, login mode, gallery media, Favorites, sharing link
 
 When enabled, outside public IPs are sent server-side to IP2Location.io; the visitor privacy notice and visible attribution explain this. The provider has its own retention policy. No GPS or device-location permission is requested. Visitor records stay locally until manually deleted and remain administrator-only. IP city results, device labels, and duration can be inaccurate or unavailable.
 
-The Archive uses [IP2Location.io IP geolocation](https://www.ip2location.io) web service when configured. Keep the provider’s required visible free-plan credit when customizing the enabled pages.
+Libregram uses [IP2Location.io IP geolocation](https://www.ip2location.io) web service when configured. Keep the provider’s required visible free-plan credit when customizing the enabled pages.
 
 ## Downloads and documentation
 

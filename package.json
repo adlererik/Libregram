@@ -1,6 +1,8 @@
 {
-  "name": "the-archive",
-  "version": "1.4.0",
+  "name": "libregram",
+  "version": "1.5.0",
+  "description": "A free, self-hosted Instagram alternative without media lock-in. Share photo/video compilations with one URL, AirPlay, or Google Cast.",
+  "repository": { "type": "git", "url": "https://github.com/adlererik/libregram.git" },
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@12.10.1",
@@ -8,7 +10,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "ARCHIVE_DEV=true node scripts/server.mjs",
+    "dev": "LIBREGRAM_DEV=true node scripts/server.mjs",
     "build": "prisma generate && next build",
     "setup:env": "node scripts/setup.mjs",
     "start": "node scripts/site.mjs start",

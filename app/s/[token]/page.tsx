@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ token: st
   if (!selection) return { title: "Link unavailable", robots: { index: false, follow: false } };
   const jar = await headers();
   const host = jar.get("host") || "localhost:3000";
-  const configured = process.env.ARCHIVE_PUBLIC_ORIGIN || process.env.CLOUDFLARE_ACCESS_HOSTNAME;
+  const configured = process.env.LIBREGRAM_PUBLIC_ORIGIN || process.env.ARCHIVE_PUBLIC_ORIGIN || process.env.CLOUDFLARE_ACCESS_HOSTNAME;
   const origin = configured ? (configured.startsWith("http") ? configured : "https://" + configured) : (jar.get("x-forwarded-proto") === "https" ? "https://" : "http://") + host;
   const site = await getHeader();
   const first = selection.items[0];

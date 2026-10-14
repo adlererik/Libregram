@@ -6,7 +6,7 @@ case "${TUNNEL_MODE:-quick}" in
     exec /usr/local/bin/cloudflared tunnel --no-autoupdate --url http://127.0.0.1:3000
     ;;
   named)
-    exec /usr/local/bin/cloudflared tunnel --no-autoupdate run --token-file /etc/the-archive-tunnel/token
+    exec /usr/local/bin/cloudflared tunnel --no-autoupdate run --token-file /etc/libregram-tunnel/token
     ;;
   *) printf 'Unsupported TUNNEL_MODE. Use quick or named.\n' >&2; exit 1 ;;
 esac

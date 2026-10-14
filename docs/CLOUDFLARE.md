@@ -4,12 +4,12 @@ By Erik Adler. Updated for v1.4.0. Cloudflare is optional; local installation an
 
 ## Server layout
 
-On your Debian installation, the CMS serves port 3000 through `the-archive@youruser.service`; replace `youruser` with your account name. Its separate connector is `the-archive-tunnel.service`. Install Cloudflare's official cloudflared binary for your machine's architecture. The binary, runner, mode configuration, and systemd unit are installed outside the checkout:
+On your Debian installation, the CMS serves port 3000 through `libregram@youruser.service`; replace `youruser` with your account name. Its separate connector is `libregram-tunnel.service`. Install Cloudflare's official cloudflared binary for your machine's architecture. The binary, runner, mode configuration, and systemd unit are installed outside the checkout:
 
 - `/usr/local/bin/cloudflared`
-- `/usr/local/libexec/the-archive-tunnel-run`
-- `/etc/the-archive-tunnel/tunnel.env`
-- `/etc/systemd/system/the-archive-tunnel.service`
+- `/usr/local/libexec/libregram-tunnel-run`
+- `/etc/libregram-tunnel/tunnel.env`
+- `/etc/systemd/system/libregram-tunnel.service`
 
 The service runs as the installation owner, restarts after exits, starts at boot, and connects outbound to Cloudflare. It does not require opening inbound ports on the router. No application database or media migration is needed for a hostname change.
 
@@ -28,8 +28,8 @@ The installer verifies the binary, installs and enables the tunnel unit, sets `S
 When the connector receives its temporary hostname, the installer prints `LIVE HTTPS URL` and `CMS LOGIN`. To retrieve the current URL later:
 
 ```bash
-archive_invocation="$(systemctl show the-archive-tunnel -p InvocationID --value)"
-sudo journalctl -u the-archive-tunnel "_SYSTEMD_INVOCATION_ID=$archive_invocation" --no-pager -o cat | grep -Eo 'https://[a-z0-9-]+\.trycloudflare\.com' | tail -n 1
+archive_invocation="$(systemctl show libregram-tunnel -p InvocationID --value)"
+sudo journalctl -u libregram-tunnel "_SYSTEMD_INVOCATION_ID=$archive_invocation" --no-pager -o cat | grep -Eo 'https://[a-z0-9-]+\.trycloudflare\.com' | tail -n 1
 ```
 
 The archive gallery is public through this URL, with the existing authenticated `/admin/login` route for management.
@@ -49,7 +49,7 @@ These steps follow the official [registration guide](https://developers.cloudfla
 ## Attach the purchased domain to the reusable service
 
 1. Open [Networking → Tunnels](https://dash.cloudflare.com/?to=/:account/tunnels) in your Cloudflare account.
-2. Select **Create Tunnel**, name it `the-archive`, and select **Create Tunnel**. If your dashboard offers a connector type, choose **Cloudflared**.
+2. Select **Create Tunnel**, name it `libregram`, and select **Create Tunnel**. If your dashboard offers a connector type, choose **Cloudflared**.
 3. Under **Setup Environment**, select **Debian / Linux** and **64-bit**. The dashboard supplies an install/run command containing a tunnel token. Keep the token private. The connector is already installed, so use only the token with the prepared switch script instead of installing a second service.
 4. On the Debian server, run:
 
@@ -57,7 +57,7 @@ These steps follow the official [registration guide](https://developers.cloudfla
    sudo bash deploy/use-named-cloudflare-tunnel.sh
    ```
 
-   At the hidden prompt, paste **only the token**, not the full dashboard command. The script stores it in `/etc/the-archive-tunnel/token` with permission 600, switches `TUNNEL_MODE=named`, and restarts the same service. Tokens must never go into Git, chat, screenshots, or command arguments.
+   At the hidden prompt, paste **only the token**, not the full dashboard command. The script stores it in `/etc/libregram-tunnel/token` with permission 600, switches `TUNNEL_MODE=named`, and restarts the same service. Tokens must never go into Git, chat, screenshots, or command arguments.
 5. In the dashboard, wait for this connector to show **Healthy** and select **Continue**.
 6. Select your tunnel → **Routes → Add route → Published application**.
 7. Choose a hostname: use `www` as the subdomain and your purchased domain, or leave the subdomain empty for the apex domain if supported by the form.
@@ -74,18 +74,18 @@ Buying the domain does not connect it to the Quick Tunnel automatically. This on
 Run these on the Debian server:
 
 ```bash
-sudo systemctl status the-archive-tunnel --no-pager
-sudo systemctl stop the-archive-tunnel
-sudo systemctl start the-archive-tunnel
-sudo systemctl restart the-archive-tunnel
-systemctl is-enabled the-archive-tunnel
-systemctl is-active the-archive-tunnel
-sudo journalctl -u the-archive-tunnel -n 100 --no-pager
+sudo systemctl status libregram-tunnel --no-pager
+sudo systemctl stop libregram-tunnel
+sudo systemctl start libregram-tunnel
+sudo systemctl restart libregram-tunnel
+systemctl is-enabled libregram-tunnel
+systemctl is-active libregram-tunnel
+sudo journalctl -u libregram-tunnel -n 100 --no-pager
 ```
 
-Stopping the tunnel removes public access while the LAN site can stay running. Stopping the application uses `sudo systemctl stop the-archive@youruser`. Both enabled services start at boot. To disable tunnel boot startup, use `sudo systemctl disable --now the-archive-tunnel`. Re-enable it with `sudo systemctl enable --now the-archive-tunnel`.
+Stopping the tunnel removes public access while the LAN site can stay running. Stopping the application uses `sudo systemctl stop libregram@youruser`. Both enabled services start at boot. To disable tunnel boot startup, use `sudo systemctl disable --now libregram-tunnel`. Re-enable it with `sudo systemctl enable --now libregram-tunnel`.
 
-Automatic binary updates are disabled because systemd supervises the process. To update, obtain a new official [cloudflared release](https://github.com/cloudflare/cloudflared/releases), verify its release digest, stop the tunnel, install the verified binary at `/usr/local/bin/cloudflared`, and restart it. Preserve `/etc/the-archive-tunnel/` and the systemd unit. Application updates follow [Operations](OPERATIONS.md) and do not require recreating the tunnel. A Quick Tunnel restart changes its URL; a named tunnel's configured custom hostname stays stable.
+Automatic binary updates are disabled because systemd supervises the process. To update, obtain a new official [cloudflared release](https://github.com/cloudflare/cloudflared/releases), verify its release digest, stop the tunnel, install the verified binary at `/usr/local/bin/cloudflared`, and restart it. Preserve `/etc/libregram-tunnel/` and the systemd unit. Application updates follow [Operations](OPERATIONS.md) and do not require recreating the tunnel. A Quick Tunnel restart changes its URL; a named tunnel's configured custom hostname stays stable.
 
 ## Optional identity login, public links, and costs
 

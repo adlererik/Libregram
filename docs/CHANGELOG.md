@@ -1,12 +1,17 @@
 # Changelog and development notes
 
-## Unreleased — October 12, 2026
+## v1.5.0 — October 14, 2026
+
+- Rename the project, GitHub repository, default gallery title, login screens, documentation, launch command, service templates, and current source downloads to Libregram.
+- Describe Libregram as a free, open-source Instagram alternative without a walled garden or media lock-in, with mixed-media compilations shared by one URL, AirPlay, and Google Cast.
+- Preserve all nine existing README screenshots and media references.
+- Keep legacy launch/configuration compatibility, existing browser identities, Favorites, login sessions, visitor history, and shared links. New installations use CMS username/password login.
 
 - Add a separate Scandinavia visitor filter for Denmark, Norway, Sweden, Finland, and Iceland; combine it with other regions using the existing saved preference and pagination.
 - Add combinable round visitor-region controls for Western Europe (including Nordic countries), North America, South America, Asia, and World. Apply the selection to counts, device summaries, pagination, and history while preserving all recorded visits.
 - Remember region preferences per administrator browser; World includes unknown/unmapped locations. Regional filtering is display-only and does not block traffic or detect bots.
 - Use the configured Header text Title for browser tabs across gallery, Favorites, administration, and shared viewers. Preserve descriptive shared-link previews and refresh layout metadata after header changes.
-- No new database schema or paid service is required.
+- No new database columns or paid service is required.
 
 ## v1.4.0 — October 12, 2026
 
@@ -70,7 +75,7 @@ By Erik Adler.
 ## v1.1.0 — October 10, 2026
 
 - By Erik Adler: publish the all-media thumbnail wall with year jumps, exact carousel-item viewing, scroll restoration, and quick Favorites collection building.
-- Explain The Archive as a self-hosted replacement for Instagram's photo-sharing and memory-preservation workflow.
+- Explain Libregram as a self-hosted replacement for Instagram's photo-sharing and memory-preservation workflow.
 - Add complete feature documentation and a beginner installation/operation walkthrough, available in Admin Info.
 - Generalize public Cloudflare, domain research, and operations examples for independent installations.
 - Include all earlier mobile playback, swipe navigation, Gold/Graphite themes, admin, favorites, presentation, and media-only casting fixes.

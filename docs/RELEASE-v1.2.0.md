@@ -1,4 +1,4 @@
-# The Archive v1.2.0 — Curate your memories, share them on your TV
+# Libregram v1.2.0 — Curate your memories, share them on your TV
 
 By **Erik Adler** · October 10, 2026 · MIT-licensed source release.
 
@@ -6,7 +6,7 @@ A self-hosted replacement for your personal Instagram photo-sharing and preserva
 
 ## Why this was developed
 
-Erik wanted control over his memories beyond Instagram's walled garden. He tried Pixelfed but, in his experience, found it too limited, clunky, and unsatisfactory for his needs. The Archive reflects that personal experience: a focused gallery and CMS with fast browsing, original-file preservation, and TV presentations. It is not a full Instagram clone or a federated social network.
+Erik wanted control over his memories beyond Instagram's walled garden. He tried Pixelfed but, in his experience, found it too limited, clunky, and unsatisfactory for his needs. Libregram reflects that personal experience: a focused gallery and CMS with fast browsing, original-file preservation, and TV presentations. It is not a full Instagram clone or a federated social network.
 
 ## Changelog: new since v1.1.0
 
@@ -31,8 +31,8 @@ The [beginner walkthrough](BEGINNER-GUIDE.md) explains Terminal, prerequisites, 
 After installing those tools:
 
 ```bash
-git clone --branch v1.2.0 https://github.com/adlererik/the-archive.git
-cd the-archive
+git clone --branch v1.2.0 https://github.com/adlererik/libregram.git
+cd libregram
 ./archive setup
 ./archive start
 ```

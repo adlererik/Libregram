@@ -14,7 +14,7 @@ export function AdminShell({ title, description, current, children }: { title: s
         </div>
         <nav className="gallery-toolbar -ml-2.5 mt-2" aria-label="Administration">
           <Link href="/admin" className="gallery-icon-button" aria-current={current === "media" ? "page" : undefined} aria-label="Add memory" title="Add memory"><SquarePlus aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link>
-          <Link href="/admin/settings" className="gallery-icon-button gallery-settings-link" aria-current={current === "settings" ? "page" : undefined} aria-label="Archive settings" title="Archive settings"><Settings aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link>
+          <Link href="/admin/settings" className="gallery-icon-button gallery-settings-link" aria-current={current === "settings" ? "page" : undefined} aria-label="Libregram settings" title="Libregram settings"><Settings aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link>
         </nav>
       </header>
       {children}

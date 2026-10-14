@@ -2,14 +2,14 @@
 
 By Erik Adler.
 
-The public source repository is [adlererik/the-archive](https://github.com/adlererik/the-archive). Commit attribution is configured locally as Erik Adler using the GitHub account's public noreply address.
+The public source repository is [adlererik/libregram](https://github.com/adlererik/libregram). Commit attribution is configured locally as Erik Adler using the GitHub account's public noreply address.
 
 For each substantial change, update the documentation and development notes, build and verify the application, review the staged files, then commit and push:
 
 ```bash
-./archive stop
-./archive build
-./archive start
+./libregram stop
+./libregram build
+./libregram start
 # In another terminal, after verification:
 git status --short
 git add -- README.md docs/FEATURES.md  # Substitute your reviewed source/documentation paths.

@@ -60,7 +60,7 @@ model PostLike {
 
 model SiteSettings {
   id          String @id @default("site")
-  title       String @default("The Archive")
+  title       String @default("Libregram")
   eyebrow     String @default("Private collection")
   description String @default("A continuous preservation of the moments that made a life.")
 }

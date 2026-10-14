@@ -13,6 +13,7 @@ let socketPath = path.join(work, "archive-server.sock");
 // Unix sockets have short path limits; long checkout paths still need controls.
 if (Buffer.byteLength(socketPath) > 100) {
   const uid = process.getuid();
+  // Preserve the legacy supervisor address so existing installs can stop/restart.
   const name = "the-archive-" + uid + "-" + createHash("sha256").update(root).digest("hex").slice(0, 24);
   const directory = path.join(os.tmpdir(), name);
   await mkdir(directory, { recursive: true, mode: 0o700 });
@@ -70,7 +71,7 @@ function addresses(port) {
 
 async function supervise() {
   const old = await control("status");
-  if (old?.ok) { console.log("The Archive is already running. " + old.urls.join(" · ")); return; }
+  if (old?.ok) { console.log("Libregram is already running. " + old.urls.join(" · ")); return; }
   if (existsSync(socketPath)) await unlink(socketPath);
   let child, port;
   let stopping = false, busy = false;
@@ -82,17 +83,17 @@ async function supervise() {
   }
 
   async function startChild() {
-    const requested = Number(process.env.ARCHIVE_PORT || "3000");
-    if (!Number.isInteger(requested) || requested < 1 || requested > 65535) throw new Error("ARCHIVE_PORT must be a port number from 1 to 65535.");
-    if (!await available(requested)) throw new Error("Port " + requested + " is busy. Stop the existing server before starting The Archive.");
+    const requested = Number(process.env.LIBREGRAM_PORT || process.env.ARCHIVE_PORT || "3000");
+    if (!Number.isInteger(requested) || requested < 1 || requested > 65535) throw new Error("LIBREGRAM_PORT must be a port number from 1 to 65535.");
+    if (!await available(requested)) throw new Error("Port " + requested + " is busy. Stop the existing server before starting Libregram.");
     port = requested;
-    child = spawn(process.execPath, [path.join(root, "scripts/server.mjs")], { cwd: root, env: { ...env, ARCHIVE_PORT: String(port), NODE_ENV: "production" }, stdio: ["ignore", "inherit", "inherit"] });
+    child = spawn(process.execPath, [path.join(root, "scripts/server.mjs")], { cwd: root, env: { ...env, LIBREGRAM_PORT: String(port), NODE_ENV: "production" }, stdio: ["ignore", "inherit", "inherit"] });
     child.once("error", (error) => console.error(error.message));
     for (let attempt = 0; attempt < 60; attempt++) {
       if (child.exitCode !== null || child.signalCode !== null) throw new Error("The server exited before it became ready.");
       try {
         const response = await fetch("http://127.0.0.1:" + port + "/api/posts?limit=1", { signal: AbortSignal.timeout(1000) });
-        if (response.ok) { const state = { ok: true, port, urls: addresses(port) }; await writeFile(path.join(work, "archive-server.json"), JSON.stringify(state, null, 2)); console.log("The Archive is ready: " + state.urls.join(" · ")); return state; }
+        if (response.ok) { const state = { ok: true, port, urls: addresses(port) }; await writeFile(path.join(work, "archive-server.json"), JSON.stringify(state, null, 2)); console.log("Libregram is ready: " + state.urls.join(" · ")); return state; }
       } catch { /* Wait until Next.js is ready. */ }
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
@@ -133,9 +134,9 @@ try {
   else if (command === "reset-login") await run(path.join(root, "scripts/reset-admin.mjs"));
   else if (command === "restart" || command === "stop" || command === "status") {
     const result = await control(command);
-    if (result?.ok) console.log(command === "stop" ? "The Archive stopped." : "The Archive is ready: " + result.urls.join(" · "));
+    if (result?.ok) console.log(command === "stop" ? "Libregram stopped." : "Libregram is ready: " + result.urls.join(" · "));
     else if (command === "restart") await supervise();
-    else console.log(result?.error || "The Archive is not managed by this launcher yet.");
+    else console.log(result?.error || "Libregram is not managed by this launcher yet.");
   } else if (command === "start") await supervise();
-  else throw new Error("Use ./archive setup, start, restart, stop, status, build, install, update, or reset-login.");
+  else throw new Error("Use ./libregram setup, start, restart, stop, status, build, install, update, or reset-login.");
 } catch (error) { console.error(error.message); process.exitCode = 1; }

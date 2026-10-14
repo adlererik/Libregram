@@ -1,12 +1,12 @@
-# Complete feature guide — v1.4.0
+# Complete feature guide — v1.5.0
 
 By Erik Adler. See the [beginner guide](BEGINNER-GUIDE.md) to install and the [changelog](CHANGELOG.md) for version history.
 
 ## Your gallery, your files
 
-The Archive is a self-hosted replacement for a personal Instagram photo-sharing and memory-preservation workflow. You run the application on your own computer/server and keep its original files and SQLite database. It is a gallery and CMS, not a federated network: no follower feeds, direct messages, viewer accounts, or automatic off-site backups.
+Libregram is a free, open-source Instagram alternative for sharing photos, videos, and memories without a walled garden or media lock-in. Run it on your own server, keep original files and a portable SQLite database, and move your collection to another server whenever you choose. Share mixed photo/video compilations with one compact URL or enjoy them through AirPlay and Google Cast. Recipients need no account or app to open a shared link.
 
-Erik developed it because he wanted an alternative to Instagram's walled garden. In his experience, Pixelfed felt too limited and clunky for this purpose. That is the creator's opinion; this project concentrates on the gallery, preservation, and TV presentation tools he wanted.
+Erik developed it to make personal media sharing independent of a social platform. Libregram is a gallery and CMS; it has no follower feeds, direct messages, viewer accounts, or automatic off-site backups. MIT-licensed software is free; hosting, storage, Internet access, and any domain or receiver hardware are supplied by the owner.
 
 ## Browse and find memories
 
@@ -94,7 +94,7 @@ Originals and generated previews/playback files live under `public/uploads/`; re
 
 Supported beginner path: Debian/Ubuntu Linux, Node.js 24+, pinned pnpm, FFmpeg/FFprobe, Git, Bash. Setup starts empty and builds production code. The launcher uses port 3000 on all interfaces and refuses an occupied port instead of opening a duplicate on 3001.
 
-Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.4.0 adds optional visitor coordinates/duration and a location-source default; v1.2.0 added optional soundtrack fields. Back up SQLite and apply the schema before building an older installation. See [free visitor lookup setup and limitations](VISITOR-STATS.md).
+Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.5.0 adds optional visitor coordinates/duration and a location-source default; v1.2.0 added optional soundtrack fields. Back up SQLite and apply the schema before building an older installation. See [free visitor lookup setup and limitations](VISITOR-STATS.md).
 
 Source ZIP/tarball releases include checksums, schema, lockfile, and guides. They exclude credentials, personal media, populated databases, visitor data, private settings, backups, runtime binaries, and compiled output. The source is MIT licensed; owners maintain their own hosting and storage.
 

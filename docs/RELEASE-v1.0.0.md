@@ -1,4 +1,4 @@
-# The Archive v1.0.0
+# Libregram v1.0.0
 
 Public source release by Erik Adler, licensed under MIT.
 

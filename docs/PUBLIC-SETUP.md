@@ -1,4 +1,4 @@
-# Install, operate, and migrate your own Archive
+# Install, operate, and migrate your own Libregram
 
 By Erik Adler.
 
@@ -8,7 +8,7 @@ New to this? Start with the [beginner walkthrough](BEGINNER-GUIDE.md) and [featu
 
 Use Linux with Node.js 24+, pnpm 12.10.1, FFmpeg/FFprobe, Git, and Bash. The lockfile fixes dependency versions. Install pnpm using `npm install -g pnpm@12.10.1`; install FFmpeg on Debian using `sudo apt-get install ffmpeg`. Node must be on PATH, or installed privately at `.runtime/node/bin/node`.
 
-Clone the repository or extract a release, enter its folder, and run `./archive setup`. This generates private environment files, installs dependencies, applies the Prisma schema to an empty database, and builds. The initial username is `admin`; its random password is stored in `.env.local`. Read it locally without sharing that file. Run `./archive start`, then open `http://localhost:3000/admin/login`. Use the square-plus for uploads and the settings cogwheel for account/header settings. Fresh setup explicitly uses password login; Cloudflare is optional and disabled until configured and chosen.
+Clone the repository or extract a release, enter its folder, and run `./libregram setup`. This generates private environment files, installs dependencies, applies the Prisma schema to an empty database, and builds. The initial username is `admin`; its random password is stored in `.env.local`. Read it locally without sharing that file. Run `./libregram start`, then open `http://localhost:3000/admin/login`. Use the square-plus for uploads and the settings cogwheel for account/header settings. Fresh setup explicitly uses password login; Cloudflare is optional and disabled until configured and chosen.
 
 The release contains no gallery media or populated database. `.env.example` is a configuration reference with placeholders, not usable login credentials. `.env` holds Prisma's database URL; `.env.local` holds Next.js settings. Keep their `DATABASE_URL` values aligned. `file:./dev.db` resolves to `prisma/dev.db`. Changing `NEXT_PUBLIC_BIRTH_DATE` requires a rebuild.
 
@@ -26,25 +26,25 @@ Setup is intended for initialization; it does not reset existing accounts, media
 
 ## Start, stop, restart, and reboot
 
-`./archive start` runs in the foreground; keep that terminal open. In another terminal in the same folder, use `./archive status`, `./archive stop`, or `./archive restart`. A restart starts the existing production build; rebuild after source changes. Ctrl+C also stops a foreground launcher. The default port is 3000 on all interfaces, so other Wi-Fi devices can use the server's LAN address. The launcher refuses to use a busy port.
+`./libregram start` runs in the foreground; keep that terminal open. In another terminal in the same folder, use `./libregram status`, `./libregram stop`, or `./libregram restart`. A restart starts the existing production build; rebuild after source changes. Ctrl+C also stops a foreground launcher. The default port is 3000 on all interfaces, so other Wi-Fi devices can use the server's LAN address. The launcher refuses to use a busy port.
 
 Use systemd on Debian for boot startup. Run setup and the production build as a **non-root** account that owns the checkout. Install Node 24 system-wide or privately in `.runtime/node/bin/node`; the root deployment script needs to locate it. Use a checkout path without spaces, quotes, backslashes, or percent signs. In that folder:
 
 ```bash
 sudo bash deploy/setup-debian-root.sh "$USER"
-sudo systemctl status "the-archive@$USER" --no-pager
-systemctl is-enabled "the-archive@$USER"
+sudo systemctl status "libregram@$USER" --no-pager
+systemctl is-enabled "libregram@$USER"
 ```
 
 The installer infers its actual checkout path, installs prerequisites, renders the service, stops a foreground launcher, and enables the boot service. It does not grant the application user sudo access. The template installer supports one checkout per machine. Replace `youruser` below with that account:
 
 ```bash
-sudo systemctl stop the-archive@youruser
-sudo systemctl start the-archive@youruser
-sudo systemctl restart the-archive@youruser
-sudo journalctl -u the-archive@youruser -n 100 --no-pager
-sudo systemctl disable --now the-archive@youruser
-sudo systemctl enable --now the-archive@youruser
+sudo systemctl stop libregram@youruser
+sudo systemctl start libregram@youruser
+sudo systemctl restart libregram@youruser
+sudo journalctl -u libregram@youruser -n 100 --no-pager
+sudo systemctl disable --now libregram@youruser
+sudo systemctl enable --now libregram@youruser
 ```
 
 After `sudo reboot`, enabled services start automatically. Do not also start a foreground copy on the same port. Inspect systemd status/logs if the site is unavailable.
@@ -53,7 +53,7 @@ After `sudo reboot`, enabled services start automatically. Do not also start a f
 
 Stop the application before copying the SQLite database. Store `prisma/dev.db`, the complete `public/uploads/` directory, `.env.local`, `.env`, `.runtime/admin-auth.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` (when present) in a separate **private** backup. Shared URLs depend on those shared-link files. See the copy commands in [Operations](OPERATIONS.md#backups-and-migration). SQLite contains posts, account hashes, hearts, site settings, and visitor records. Generated media is also under uploads. Favorites belong to each viewer's browser and are not a server backup.
 
-On the destination machine, install prerequisites, clone the desired release tag, and install dependencies with `./archive install`. Restore private files to the same relative paths and keep restrictive environment-file permissions (`chmod 600 .env .env.local`). As the owning user, run `pnpm db:push` after reviewing its proposed schema changes, then `./archive build`. Start locally or install the boot service. Check the gallery, login, and media before switching traffic. Do not run setup to generate a second account when restoring an existing database.
+On the destination machine, install prerequisites, clone the desired release tag, and install dependencies with `./libregram install`. Restore private files to the same relative paths and keep restrictive environment-file permissions (`chmod 600 .env .env.local`). As the owning user, run `pnpm db:push` after reviewing its proposed schema changes, then `./libregram build`. Start locally or install the boot service. Check the gallery, login, and media before switching traffic. Do not run setup to generate a second account when restoring an existing database.
 
 ## Update the application
 
@@ -61,19 +61,21 @@ Stop the application, make a private backup, and record the old Git revision fir
 
 ```bash
 git fetch origin --tags
-git checkout v1.4.0  # Substitute the release you intend to install.
-./archive install
+git checkout v1.5.0  # Substitute the release you intend to install.
+./libregram install
 # Review schema changes, then apply only if appropriate:
 pnpm db:push
 ```
 
-v1.4.0 adds optional visitor latitude/longitude, duration, last-update time, and a location-source field with a default for older rows. Back up SQLite first, then apply `pnpm db:push` before building. Existing posts, visitor history, credentials, and login mode stay intact. Upgrades from v1.1.0 or earlier also need the optional soundtrack fields introduced in v1.2.0. Apply the schema before building; never use `--accept-data-loss` or reset the existing database.
+v1.4.0 introduced optional visitor latitude/longitude, duration, last-update time, and a location-source field with a default for older rows. Back up SQLite first, then apply `pnpm db:push` before building when upgrading from an earlier schema. Existing posts, visitor history, credentials, and login mode stay intact. Upgrades from v1.1.0 or earlier also need the optional soundtrack fields introduced in v1.2.0. Never use `--accept-data-loss` or reset the existing database.
 
-For a foreground installation: `./archive stop`, `./archive build`, `./archive start`.
+v1.5.0 names the project Libregram, adds region filtering, and uses the configured gallery title for browser tabs. There are no new columns; the schema's default gallery title becomes Libregram for new installations. See [rename and upgrade compatibility](RENAMING.md) before changing an older deployment's service names. Keep an existing checkout in place: new GitHub URLs and new launch commands do not require moving private data.
+
+For a foreground installation: `./libregram stop`, `./libregram build`, `./libregram start`.
 
 For systemd, run `sudo bash deploy/rebuild-archive-root.sh youruser`. This stops the service, preserves the previous production build, builds as the owning user, restarts, and checks readiness. Failed builds restore the previous build. This is a build rollback, not a database/source rollback; keep a database backup and record the previous Git revision before updating. Dependency installation and schema changes must already be complete.
 
-`./archive update` updates dependency versions and the lockfile; it is a developer operation, not the normal release-upgrade command. Public releases are source-only and contain no automatic destructive migrations.
+`./libregram update` updates dependency versions and the lockfile; it is a developer operation, not the normal release-upgrade command. Public releases are source-only and contain no automatic destructive migrations.
 
 ## HTTPS, Google Cast, and AirPlay
 

@@ -4,7 +4,7 @@ By Erik Adler.
 
 Open `/admin/login` and enter your username and password. On a new database, the environment variables `ADMIN_USERNAME` and `ADMIN_PASSWORD` establish the initial account. The database then stores the username and a salted password hash. Changing `.env.local` does not replace an existing account.
 
-Use the cogwheel → Login settings to change the username or password with the current password. Old sessions are revoked after a change. If you lose access, set the desired `ADMIN_USERNAME` and `ADMIN_PASSWORD` in private `.env.local`, then run `./archive reset-login` locally from the project directory. This replaces the stored login and revokes existing sessions. Keep real passwords and session secrets in `.env.local`; never commit that file.
+Use the cogwheel → Login settings to change the username or password with the current password. Old sessions are revoked after a change. If you lose access, set the desired `ADMIN_USERNAME` and `ADMIN_PASSWORD` in private `.env.local`, then run `./libregram reset-login` locally from the project directory. This replaces the stored login and revokes existing sessions. Keep real passwords and session secrets in `.env.local`; never commit that file.
 
 ## Optional Cloudflare sign-in
 
@@ -23,7 +23,7 @@ ADMIN_AUTH_MODE="password"
 
 Open Login settings through the protected public domain to enable Cloudflare sign-in. The CMS verifies the signed Access token's signature, issuer, audience, owner email, expiry, and public hostname before allowing the switch or creating an admin session. A plain email header is insufficient. An unavailable or invalid token never falls back to password authentication in Cloudflare mode. The CMS session cannot outlast the Access token that created it. Sign out clears the CMS cookie and uses Cloudflare's logout endpoint; this also ends the user's other Access sessions and can show Cloudflare's signed-out page.
 
-The choice is stored privately in `.runtime/admin-auth.json`; it overrides `ADMIN_AUTH_MODE`. Include that file in private installation backups. To recover locally, set that file to `{"mode":"password"}` and use `./archive reset-login` if the password is lost. `ADMIN_AUTH_MODE="cloudflare"` can also enable a newly configured installation before a choice has been saved through the UI.
+The choice is stored privately in `.runtime/admin-auth.json`; it overrides `ADMIN_AUTH_MODE`. Include that file in private installation backups. To recover locally, set that file to `{"mode":"password"}` and use `./libregram reset-login` if the password is lost. `ADMIN_AUTH_MODE="cloudflare"` can also enable a newly configured installation before a choice has been saved through the UI.
 
 ### Free sign-in methods and device support
 
@@ -58,4 +58,4 @@ Use HTTPS with secure cookies before exposing the archive on a server. Source co
 
 Visitor stats has small round choices for Western Europe, Scandinavia, North America, South America, Asia, and World. Scandinavia includes Denmark, Norway, Sweden, Finland, and Iceland. Several regional choices can be combined; World shows everything. Visitor counts, device summaries, and history pagination use the same filter, while post/media/heart totals remain archive-wide. This only changes the display; it does not block visits, detect bots, or delete hidden records. Choices are remembered for this administrator browser. See [country definitions and behavior](VISITOR-STATS.md#filter-the-displayed-regions).
 
-**Header text → Title** names both the gallery header and browser tab across gallery, Favorites, administration, and shared viewers. Save header to apply the title; the default for a fresh installation is The Archive. Shared link preview descriptions still describe the sent media.
+**Header text → Title** names both the gallery header and browser tab across gallery, Favorites, administration, and shared viewers. Save header to apply the title; the default for a fresh installation is Libregram. Shared link preview descriptions still describe the sent media.

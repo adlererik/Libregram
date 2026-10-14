@@ -6,7 +6,11 @@ if [ "$(id -u)" -ne 0 ]; then printf 'Run this deployment with sudo.\n' >&2; exi
 if [[ ! "$archive_user" =~ ^[a-z_][a-z0-9_-]*$ ]] || [ "$archive_user" = root ]; then printf 'Provide the non-root account that owns this installation.\n' >&2; exit 1; fi
 getent passwd "$archive_user" >/dev/null
 if [[ "$archive_project" =~ [[:space:]\"\\%] ]]; then printf 'Use a project path without spaces, quotes, backslashes, or percent signs for systemd deployment.\n' >&2; exit 1; fi
-archive_service="the-archive@$archive_user"
+archive_service="libregram@$archive_user"
+# Existing installations can rebuild before migrating their boot service.
+if ! systemctl cat "$archive_service" >/dev/null 2>&1 && systemctl cat "the-archive@$archive_user" >/dev/null 2>&1; then
+  archive_service="the-archive@$archive_user"
+fi
 archive_node="$archive_project/.runtime/node/bin/node"
 if [ ! -x "$archive_node" ]; then archive_node="$(command -v node || true)"; fi
 if [ ! -x "$archive_node" ] || ! "$archive_node" -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 24 ? 0 : 1)'; then printf 'Install Node.js 24 or newer system-wide, or at .runtime/node/bin/node.\n' >&2; exit 1; fi

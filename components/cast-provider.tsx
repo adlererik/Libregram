@@ -15,7 +15,7 @@ export function CastProvider({ children }: { children: React.ReactNode }) {
   const context = useRef<CastContext | null>(null); const controller = useRef<RemoteController | null>(null); const remote = useRef<RemotePlayer | null>(null); const epoch = useRef(0); const last = useRef<{ id: string; loop: boolean } | null>(null);
   useEffect(() => {
     if (supportsAirPlay()) { setReady(true); return; }
-    if (!window.isSecureContext) { setReady(true); setReason("Google Cast requires Chrome and HTTPS. Open the archive's HTTPS address to connect to a TV."); return; }
+    if (!window.isSecureContext) { setReady(true); setReason("Google Cast requires Chrome and HTTPS. Open Libregram's HTTPS address to connect to a TV."); return; }
     const sdk = castWindow(); let cleanup = () => {}; let disposed = false;
     const initialize = (supported: boolean) => {
       if (disposed) return;
@@ -55,7 +55,7 @@ export function CastProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) throw new Error("The TV media address is unavailable. Try again.");
       const result = await response.json();
       const mediaOrigin = new URL(result.mediaOrigin || window.location.origin);
-      if (mediaOrigin.protocol !== "https:" || mediaOrigin.username || mediaOrigin.password || ["localhost", "0.0.0.0", "127.0.0.1", "[::1]", "[::]"].includes(mediaOrigin.hostname)) throw new Error("Open the archive’s public HTTPS address before casting. Your TV needs that address to load the media.");
+      if (mediaOrigin.protocol !== "https:" || mediaOrigin.username || mediaOrigin.password || ["localhost", "0.0.0.0", "127.0.0.1", "[::1]", "[::]"].includes(mediaOrigin.hostname)) throw new Error("Open Libregram’s public HTTPS address before casting. Your TV needs that address to load the media.");
       const kind = options.mode || "single"; const seconds = kind === "single" ? 30 : options.photoSeconds || 6; const queue = [];
       for (const media of items) {
         if (epoch.current !== requestId || ctx.getCurrentSession() !== session) return;

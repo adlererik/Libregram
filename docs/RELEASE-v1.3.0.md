@@ -1,4 +1,4 @@
-# The Archive v1.3.0 — One link to share your memories
+# Libregram v1.3.0 — One link to share your memories
 
 By **Erik Adler** · October 10, 2026 · MIT-licensed source release.
 
@@ -6,7 +6,7 @@ A self-hosted Instagram replacement for your personal photos, videos, and memori
 
 ## Why Erik built this
 
-Erik wanted ownership of his memories beyond Instagram's walled garden. In his experience, Pixelfed was too limited and clunky for the workflow he wanted. The Archive combines a focused gallery, original-file preservation, fast browsing, easy family sharing, and TV playback. These are concrete reasons it suits his workflow better; it does not claim universal superiority over every gallery or provide a full social network.
+Erik wanted ownership of his memories beyond Instagram's walled garden. In his experience, Pixelfed was too limited and clunky for the workflow he wanted. Libregram combines a focused gallery, original-file preservation, fast browsing, easy family sharing, and TV playback. These are concrete reasons it suits his workflow better; it does not claim universal superiority over every gallery or provide a full social network.
 
 The existing project screenshots remain in the [README](../README.md). Fresh installations start empty with their own media and unique credentials.
 
@@ -33,8 +33,8 @@ Google Cast queues run on a compatible receiver; AirPlay presentation advancemen
 Start with the [beginner walkthrough](BEGINNER-GUIDE.md). Supported path: Debian/Ubuntu Linux, Node.js 24+, pnpm 12.10.1, FFmpeg/FFprobe, Git, and Bash. Run setup as a normal user.
 
 ```bash
-git clone --branch v1.3.0 https://github.com/adlererik/the-archive.git
-cd the-archive
+git clone --branch v1.3.0 https://github.com/adlererik/libregram.git
+cd libregram
 ./archive setup
 ./archive start
 ```

@@ -110,7 +110,7 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
       <WallVideo src={mediaUrl(item.playbackFile || item.fileName)} poster={item.thumbnail ? mediaUrl(item.thumbnail) : undefined} desktop={desktop} attach={attachVideo} onPlay={guardPlayback} onAudible={audioRecovered} />
     ) : isVideo && !item.thumbnail ? (
       <div className="grid h-full place-items-center bg-gradient-to-br from-zinc-900 to-black"><Play className="h-14 w-14 text-studio-accent" /></div>
-    ) : <img src={mediaUrl(item.thumbnail || item.fileName)} alt="Archive memory" draggable={false} loading="lazy" decoding="async" className="h-full w-full object-cover" /> : <div className="h-full w-full bg-gradient-to-br from-zinc-900 to-black" />}
+    ) : <img src={mediaUrl(item.thumbnail || item.fileName)} alt="Libregram memory" draggable={false} loading="lazy" decoding="async" className="h-full w-full object-cover" /> : <div className="h-full w-full bg-gradient-to-br from-zinc-900 to-black" />}
     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/15" />
   </>;
 
