@@ -59,3 +59,13 @@ Use HTTPS with secure cookies before exposing the archive on a server. Source co
 Visitor stats has small round choices for Western Europe, Scandinavia, North America, South America, Asia, and World. Scandinavia includes Denmark, Norway, Sweden, Finland, and Iceland. Several regional choices can be combined; World shows everything. Visitor counts, device summaries, and history pagination use the same filter, while post/media/heart totals remain archive-wide. This only changes the display; it does not block visits, detect bots, or delete hidden records. Choices are remembered for this administrator browser. See [country definitions and behavior](VISITOR-STATS.md#filter-the-displayed-regions).
 
 **Header text → Title** names both the gallery header and browser tab across gallery, Favorites, administration, and shared viewers. Save header to apply the title; the default for a fresh installation is Libregram. Shared link preview descriptions still describe the sent media.
+
+## Age tracking
+
+Open **cogwheel → Age tracking**. Enter the person's **Date of birth**, enable **Show age on memories**, and choose **Save age tracking**. A birthday gives accurate historical ages; a fixed current-age number would become wrong over time. **Age today** previews the entered date. The whole gallery tracks one person, and each card/theater shows their age on the memory's displayed date.
+
+Save to apply changes without editing environment files, rebuilding, or restarting. Other open browsers should reload. Turn the switch off and save to hide ages while remembering the birthday, or disable and clear the date to remove it. Invalid or future dates are rejected when saving. Empty or invalid configuration never invents an age.
+
+The authenticated settings API saves `.runtime/age-tracking.json` atomically with owner-only file permissions. Include it in private backups; no database schema change or paid service is needed. Existing `NEXT_PUBLIC_BIRTH_DATE` configuration is used only before the first form save. Saved settings, including an explicit Off choice, take precedence across restarts and upgrades.
+
+Age labels are public. While tracking is enabled, the birthday is delivered to visitors' browsers to calculate them. When disabled, the saved birthday is omitted from public page settings but remains available to the authenticated administrator. Never publish the private runtime file or installation environment in Git.

@@ -2,6 +2,7 @@
 
 ## Unreleased — October 17, 2026
 
+- Add Settings → Age tracking with a date-of-birth picker, age-today preview, and on/off switch. Apply changes to feed/theater immediately without rebuilding; persist authenticated settings atomically in private runtime storage, retaining legacy birthday configuration as a first-use fallback.
 - Use the configured calendar birthday consistently in feed and theater age labels; validate dates and hide labels when the birthday is missing/invalid instead of substituting a hardcoded date. Fresh setup leaves optional age labels unconfigured rather than inventing a birthday.
 - Add a small centered expand/collapse chevron to overflowing feed captions. Preserve line breaks, wrap long words, adapt to themes and changing widths, and expose accessible expanded state without opening the media viewer.
 - No database schema, authentication, public-domain, media-link, or dependency changes.

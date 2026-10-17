@@ -10,7 +10,7 @@ Use Linux with Node.js 24+, pnpm 12.10.1, FFmpeg/FFprobe, Git, and Bash. The loc
 
 Clone the repository or extract a release, enter its folder, and run `./libregram setup`. This generates private environment files, installs dependencies, applies the Prisma schema to an empty database, and builds. The initial username is `admin`; its random password is stored in `.env.local`. Read it locally without sharing that file. Run `./libregram start`, then open `http://localhost:3000/admin/login`. Use the square-plus for uploads and the settings cogwheel for account/header settings. Fresh setup explicitly uses password login; Cloudflare is optional and disabled until configured and chosen.
 
-The release contains no gallery media or populated database. `.env.example` is a configuration reference with placeholders, not usable login credentials. `.env` holds Prisma's database URL; `.env.local` holds Next.js settings. Keep their `DATABASE_URL` values aligned. `file:./dev.db` resolves to `prisma/dev.db`. Changing `NEXT_PUBLIC_BIRTH_DATE` requires a rebuild.
+The release contains no gallery media or populated database. `.env.example` is a configuration reference with placeholders, not usable login credentials. `.env` holds Prisma's database URL; `.env.local` holds Next.js settings. Keep their `DATABASE_URL` values aligned. `file:./dev.db` resolves to `prisma/dev.db`. Set the person's birthday under **Settings → Age tracking**; saving needs no rebuild/restart. A legacy `NEXT_PUBLIC_BIRTH_DATE` value is used only until age settings are first saved; changing that environment fallback still requires a rebuild.
 
 Manual equivalent:
 
@@ -51,7 +51,7 @@ After `sudo reboot`, enabled services start automatically. Do not also start a f
 
 ## Back up and migrate
 
-Stop the application before copying the SQLite database. Store `prisma/dev.db`, the complete `public/uploads/` directory, `.env.local`, `.env`, `.runtime/admin-auth.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` (when present) in a separate **private** backup. Shared URLs depend on those shared-link files. See the copy commands in [Operations](OPERATIONS.md#backups-and-migration). SQLite contains posts, account hashes, hearts, site settings, and visitor records. Generated media is also under uploads. Favorites belong to each viewer's browser and are not a server backup.
+Stop the application before copying the SQLite database. Store `prisma/dev.db`, the complete `public/uploads/` directory, `.env.local`, `.env`, `.runtime/admin-auth.json`, `.runtime/age-tracking.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` (when present) in a separate **private** backup. Shared URLs depend on those shared-link files. See the copy commands in [Operations](OPERATIONS.md#backups-and-migration). SQLite contains posts, account hashes, hearts, site settings, and visitor records. Generated media is also under uploads. Favorites belong to each viewer's browser and are not a server backup.
 
 On the destination machine, install prerequisites, clone the desired release tag, and install dependencies with `./libregram install`. Restore private files to the same relative paths and keep restrictive environment-file permissions (`chmod 600 .env .env.local`). As the owning user, run `pnpm db:push` after reviewing its proposed schema changes, then `./libregram build`. Start locally or install the boot service. Check the gallery, login, and media before switching traffic. Do not run setup to generate a second account when restoring an existing database.
 

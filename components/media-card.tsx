@@ -8,6 +8,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ArchivePost } from "@/lib/archive";
 import { mediaUrl } from "@/lib/archive";
 import { ageAt } from "@/lib/dates";
+import { useAgeTracking } from "./age-tracking-provider";
 import { HeartButton } from "./heart-button";
 import { FavoriteButton } from "./favorite-button";
 import { ShareButton } from "./share-button";
@@ -25,6 +26,7 @@ import { WallVideo } from "./wall-video";
 type Props = { post: ArchivePost; isAdmin: boolean; theaterOpen: boolean; onOpen: (mediaIndex: number) => void; onEdit: () => void };
 
 export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props) {
+  const { settings: ageTracking } = useAgeTracking();
   const cast = useCast();
   const desktop = useDesktopMedia();
   const soundEnabled = useSoundPreference();
@@ -52,7 +54,7 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
   const carousel = post.mediaItems.length > 1;
   const castingThisCard = cast.connected && cast.mode === "single" && post.mediaItems.some(media => media.id === cast.activeId);
   const formatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date(post.takenAt));
-  const age = ageAt(post.takenAt);
+  const age = ageTracking.enabled ? ageAt(post.takenAt, ageTracking.birthDate) : null;
 
   const stopPreview = useCallback(() => {
     previewActive.current = false;

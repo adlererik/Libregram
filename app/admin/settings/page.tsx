@@ -11,6 +11,7 @@ import { getHeader } from "@/lib/settings";
 import { visitorFilter } from "@/lib/visitor-filter";
 import { selectedVisitorRegions, visitorRegionCountries, VISITOR_REGION_COOKIE } from "@/lib/visitor-regions";
 import { usesIP2Location } from "@/scripts/visitor-location.mjs";
+import { getAgeTrackingSettings } from "@/lib/age-tracking-settings";
 
 export const dynamic = "force-dynamic";
 
@@ -21,8 +22,8 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
   const regions = selectedVisitorRegions(params.visitsRegions ?? jar.get(VISITOR_REGION_COOKIE)?.value);
   const countries = visitorRegionCountries(regions);
   const where = { AND: [await visitorFilter(), ...(countries ? [{ country: { in: countries } }] : [])] };
-  const [account, adminAuth, header, visitCount, visitors, cities, posts, media, hearts, devices, documents] = await Promise.all([
-    getAdminAccount(), getAdminAuthSettings(), getHeader(), prisma.visit.count({ where }),
+  const [account, adminAuth, header, ageTracking, visitCount, visitors, cities, posts, media, hearts, devices, documents] = await Promise.all([
+    getAdminAccount(), getAdminAuthSettings(), getHeader(), getAgeTrackingSettings(), prisma.visit.count({ where }),
     prisma.visit.groupBy({ by: ["visitorKey"], where }),
     prisma.visit.groupBy({ by: ["city", "country"], where: { AND: [where, { city: { not: "" } }] } }),
     prisma.post.count(), prisma.mediaItem.count(), prisma.postLike.count(),
@@ -33,5 +34,5 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
   const visitPages = Math.max(1, Math.ceil(visitCount / 50));
   const visitPage = Number.isSafeInteger(requested) && requested > 0 ? Math.min(requested, visitPages) : 1;
   const visits = await prisma.visit.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: (visitPage - 1) * 50, take: 50, select: { id: true, ip: true, city: true, country: true, region: true, latitude: true, longitude: true, locationSource: true, durationSeconds: true, lastSeenAt: true, device: true, os: true, browser: true, language: true, referrer: true, userAgent: true, createdAt: true } });
-  return <AdminShell title="Libregram settings" description="Visitor history, gallery details, login settings, and your archive handbook." current="settings"><AdminConsole username={account.username} adminAuth={adminAuth} header={header} visits={visits.map(v => ({ ...v, createdAt: v.createdAt.toISOString(), lastSeenAt: v.lastSeenAt?.toISOString() || null }))} regions={regions} geoProvider={usesIP2Location() ? "ip2location" : "local"} stats={{ visits: visitCount, visitors: visitors.length, cities: cities.length, posts, media, hearts }} visitPage={visitPage} visitPages={visitPages} breakdown={devices.map(d => ({ device: d.device, count: d._count._all }))} documents={documents} /></AdminShell>;
+  return <AdminShell title="Libregram settings" description="Visitor history, gallery details, login settings, and your archive handbook." current="settings"><AdminConsole username={account.username} adminAuth={adminAuth} header={header} ageTracking={ageTracking} visits={visits.map(v => ({ ...v, createdAt: v.createdAt.toISOString(), lastSeenAt: v.lastSeenAt?.toISOString() || null }))} regions={regions} geoProvider={usesIP2Location() ? "ip2location" : "local"} stats={{ visits: visitCount, visitors: visitors.length, cities: cities.length, posts, media, hearts }} visitPage={visitPage} visitPages={visitPages} breakdown={devices.map(d => ({ device: d.device, count: d._count._all }))} documents={documents} /></AdminShell>;
 }

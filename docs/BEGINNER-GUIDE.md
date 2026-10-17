@@ -72,7 +72,7 @@ sed -n '/^ADMIN_PASSWORD=/p' .env.local
 
 Your username is **admin**. Use the text between the quotation marks as the password. Keep it private and save it in your password manager; do not paste it into a public issue or chat. Setup generates a different password and session secret for every installation and sets `ADMIN_AUTH_MODE="password"`. The example settings file is a reference, not your generated password.
 
-Age labels are optional. Fresh setup leaves `NEXT_PUBLIC_BIRTH_DATE` blank, so no age is invented. Set this value in your private `.env.local` to the actual birthday in `YYYY-MM-DD` format, then rebuild with `./libregram build` and restart the application. Both feed cards and the theater show the age on the memory's displayed date, with the next year beginning on that birthday. Missing or invalid dates hide the age label. Existing settings are preserved by setup; correct an earlier placeholder birthday before rebuilding.
+Age labels are optional. After signing in, open **cogwheel → Age tracking**, enter the person's **Date of birth**, enable **Show age on memories**, and save. The feed and theater show their age on each memory's displayed date; **Age today** helps check your entry. You can track one person for the whole gallery and turn labels off without forgetting the saved birthday. Changes need no rebuild or restart; other browsers should reload to see them. Fresh installations start without an invented birthday. An existing `NEXT_PUBLIC_BIRTH_DATE` setting supplies the initial value until you save this form. See [age tracking and privacy](ADMIN.md#age-tracking).
 
 ## 5. Start and open your site
 

@@ -96,6 +96,7 @@ Desktop
 | Estimated visit duration | See time while the page was visible, updated about every 20 seconds; older durations are not invented. |
 | Visitor region filters | Combine Western Europe, Scandinavia, North America, South America, and Asia, or choose World; filter counts/history without blocking traffic or deleting records. |
 | Your own page title | The browser tab uses the Title saved in Header text settings. |
+| Age tracking settings | Enter a person's birthday, preview their age today, and toggle age labels on memories; save without rebuilding or restarting. |
 | Persistent statistics | History stays until you manually delete one visit or all history; older records are paginated. |
 | Simple default login | A unique username/password installation with local recovery; optional verified Cloudflare identity login for owners who configure it. |
 | Settings and handbook | The cogwheel contains header text, visitor history, login settings, and included documentation; the square-plus keeps uploads separate. |

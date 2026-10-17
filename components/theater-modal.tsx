@@ -8,6 +8,7 @@ import { flushSync } from "react-dom";
 import type { ArchivePost } from "@/lib/archive";
 import { mediaUrl } from "@/lib/archive";
 import { ageAt } from "@/lib/dates";
+import { useAgeTracking } from "./age-tracking-provider";
 import { useModal } from "@/lib/use-modal";
 import { FavoriteButton } from "./favorite-button";
 import { ShareButton } from "./share-button";
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export function TheaterModal({ post, initialMediaIndex, posts, onClose, onPrevious, onNext }: Props) {
+  const { settings: ageTracking } = useAgeTracking();
   const cast = useCast();
   const casting = cast.connected && cast.mode === "single";
   const castingRef = useRef(false); castingRef.current = casting || cast.busy;
@@ -46,7 +48,7 @@ export function TheaterModal({ post, initialMediaIndex, posts, onClose, onPrevio
   const isVideo = media?.mediaType === "VIDEO";
   const postIndex = posts.findIndex((entry) => entry.id === post.id);
   const formatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(post.takenAt));
-  const age = ageAt(post.takenAt);
+  const age = ageTracking.enabled ? ageAt(post.takenAt, ageTracking.birthDate) : null;
 
   const resumeVideo = useCallback((video: HTMLVideoElement) => {
     void playVideoWithSound(video, () => !castingRef.current && videoRef.current === video, setAudioBlocked, () => setPlaybackError("Unable to start this video. Try Play, or open it in your phone’s player below."), { mute: Boolean(post.soundtrack?.muteVideo) });
