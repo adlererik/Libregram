@@ -6,14 +6,12 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 if (Number(process.versions.node.split(".")[0]) < 24) throw new Error("Node.js 24 or newer is required.");
-const birth = new Date();
-birth.setUTCFullYear(birth.getUTCFullYear() - 12);
 const settings = [
   'DATABASE_URL="file:./dev.db"',
   'ADMIN_USERNAME="admin"',
   'ADMIN_PASSWORD="' + randomBytes(24).toString("base64url") + '"',
   'SESSION_SECRET="' + randomBytes(48).toString("hex") + '"',
-  'NEXT_PUBLIC_BIRTH_DATE="' + birth.toISOString().slice(0, 10) + '"',
+  'NEXT_PUBLIC_BIRTH_DATE=""',
   'SESSION_COOKIE_SECURE="false"',
   'TRUST_PROXY="false"',
   'ADMIN_AUTH_MODE="password"',

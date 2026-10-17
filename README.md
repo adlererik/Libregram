@@ -82,7 +82,7 @@ Desktop
 | Link previews | Open Graph thumbnail metadata gives compatible messaging apps a preview of the first item. |
 | Google Cast and AirPlay | Send selected media to a compatible TV from supported Chrome or Apple Safari. The page and admin controls stay off the TV. |
 | Favorites presentations | Save individual carousel items, reorder them, choose photo duration, and play locally or on a TV. |
-| Continuous timeline | Browse newest first, scroll seamlessly into older memories, and read captions, dates, and configurable age labels. |
+| Continuous timeline | Browse newest first, scroll seamlessly into older memories, expand long captions with a centered chevron, and see ages based on your configured birthday. |
 | Fast thumbnail wall | Browse every photo/video in a compact grid, jump to a year, open an exact item, and return to your scroll position. |
 | Carousel navigation | Swipe, tap the item counter, or choose a thumbnail; edit ordering and add or remove items later. |
 | Desktop and mobile viewers | Cinematic desktop theater, inline mobile media, native video controls, and keyboard navigation. |

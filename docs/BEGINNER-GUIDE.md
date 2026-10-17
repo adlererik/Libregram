@@ -72,7 +72,7 @@ sed -n '/^ADMIN_PASSWORD=/p' .env.local
 
 Your username is **admin**. Use the text between the quotation marks as the password. Keep it private and save it in your password manager; do not paste it into a public issue or chat. Setup generates a different password and session secret for every installation and sets `ADMIN_AUTH_MODE="password"`. The example settings file is a reference, not your generated password.
 
-For age labels, edit `NEXT_PUBLIC_BIRTH_DATE` in `.env.local` to the relevant birthday in `YYYY-MM-DD` format before the next build. Run `./libregram build` after changing this setting.
+Age labels are optional. Fresh setup leaves `NEXT_PUBLIC_BIRTH_DATE` blank, so no age is invented. Set this value in your private `.env.local` to the actual birthday in `YYYY-MM-DD` format, then rebuild with `./libregram build` and restart the application. Both feed cards and the theater show the age on the memory's displayed date, with the next year beginning on that birthday. Missing or invalid dates hide the age label. Existing settings are preserved by setup; correct an earlier placeholder birthday before rebuilding.
 
 ## 5. Start and open your site
 

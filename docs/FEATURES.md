@@ -11,7 +11,8 @@ Erik developed it to make personal media sharing independent of a social platfor
 ## Browse and find memories
 
 - **Continuous timeline:** newest first, older memories loaded as you scroll, without page or Load More buttons. Responsive four/two/one-column layout.
-- **Dates and captions:** readable captions, exact dates in the viewer, and milestone age calculated from your configured birth date.
+- **Dates and captions:** readable captions, exact dates in the viewer, and age at the memory's date calculated from your actual configured birthday. Missing/invalid birthdays hide ages rather than displaying a guessed age.
+- **Expandable feed captions:** long captions preview four lines; a small centered down-chevron at the bottom of the card reveals the full text. Tap the up-chevron to collapse it. The theme-adaptive control appears only when needed, supports keyboards and screen readers, and keeps line breaks and long words readable on phones.
 - **All-media thumbnail wall:** switch to a dense, virtualized grid containing every photo/video, including individual carousel items. Static lazy previews avoid loading every full video.
 - **Find a year:** jump to older memories; open the exact selected item and return to the same scroll position. Timeline and thumbnail modes preserve separate browsing positions.
 - **Carousel previews:** tap the item counter or swipe left for next and right for previous, or select a thumbnail directly. Expanded thumbnail previews reveal carousel contents. The full viewer returns to the wall after advancing past the last item; wall previews cycle within their carousel.

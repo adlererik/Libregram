@@ -46,6 +46,7 @@ export function TheaterModal({ post, initialMediaIndex, posts, onClose, onPrevio
   const isVideo = media?.mediaType === "VIDEO";
   const postIndex = posts.findIndex((entry) => entry.id === post.id);
   const formatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(post.takenAt));
+  const age = ageAt(post.takenAt);
 
   const resumeVideo = useCallback((video: HTMLVideoElement) => {
     void playVideoWithSound(video, () => !castingRef.current && videoRef.current === video, setAudioBlocked, () => setPlaybackError("Unable to start this video. Try Play, or open it in your phone’s player below."), { mute: Boolean(post.soundtrack?.muteVideo) });
@@ -159,7 +160,7 @@ export function TheaterModal({ post, initialMediaIndex, posts, onClose, onPrevio
           <div className="mx-auto w-full max-w-5xl px-1 pt-8 sm:pt-10">
             <SoundtrackPlayer track={post.soundtrack} active={!castingRef.current && (!isVideo || playing)} surface={soundtrackSurface} />
             <div className="mb-5 mt-5 flex flex-wrap items-center gap-3"><FavoriteButton mediaId={media.id} /><ShareButton ids={[media.id]} title={post.caption.slice(0, 100) || "A memory for you"} />{post.mediaItems.length > 1 ? <p className="text-xs text-white/50">Swipe left for the next item; right for the previous. After the final item, return to the wall.</p> : null}</div>
-            <p className="font-editorial text-[26px] leading-tight text-studio-date sm:text-4xl">{formatted} <span className="font-sans text-base text-studio-accent sm:text-lg">• Age {ageAt(post.takenAt)}</span></p>
+            <p className="font-editorial text-[26px] leading-tight text-studio-date sm:text-4xl">{formatted} {age !== null ? <span className="font-sans text-base text-studio-accent sm:text-lg">• Age {age}</span> : null}</p>
             {post.caption ? <p className="mt-5 max-w-4xl whitespace-pre-wrap text-2xl leading-relaxed text-white/90">{post.caption}</p> : null}
             <div className="mt-10 flex justify-between gap-4 border-t border-white/10 pt-5">
               <button disabled={postIndex <= 0} onClick={onPrevious} className="flex min-h-14 items-center gap-2 text-sm font-semibold tracking-[0.12em] text-white disabled:opacity-20 hover:text-[#e7bd52]"><ChevronLeft className="h-5 w-5" /> NEWER</button>

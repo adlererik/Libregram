@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { SoundtrackPlayer } from "./soundtrack-player";
 import { motion } from "framer-motion";
-import { Images, Pencil, Play, Plus, Volume2, VolumeX } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronDown, ChevronUp, Images, Pencil, Play, Plus, Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ArchivePost } from "@/lib/archive";
 import { mediaUrl } from "@/lib/archive";
 import { ageAt } from "@/lib/dates";
@@ -32,6 +32,11 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
   const [inWindow, setInWindow] = useState(false);
   const [audioBlocked, setAudioBlocked] = useState(false);
   const article = useRef<HTMLElement>(null);
+  const caption = useRef<HTMLParagraphElement>(null);
+  const captionId = useId();
+  const [expandedCaption, setExpandedCaption] = useState<string | null>(null);
+  const captionExpanded = expandedCaption === post.caption;
+  const [captionOverflows, setCaptionOverflows] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const surface = useRef<HTMLDivElement>(null);
   const [shareOpen, setShareOpen] = useState(false);
@@ -47,6 +52,7 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
   const carousel = post.mediaItems.length > 1;
   const castingThisCard = cast.connected && cast.mode === "single" && post.mediaItems.some(media => media.id === cast.activeId);
   const formatted = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date(post.takenAt));
+  const age = ageAt(post.takenAt);
 
   const stopPreview = useCallback(() => {
     previewActive.current = false;
@@ -64,6 +70,23 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
     observer.observe(article.current);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const paragraph = caption.current;
+    if (!inWindow || !paragraph || !post.caption) return;
+    let disposed = false;
+    const measure = () => {
+      if (disposed || !paragraph.clientWidth) return;
+      const lineHeight = Number.parseFloat(getComputedStyle(paragraph).lineHeight);
+      // Measure against four lines even while expanded, so Collapse stays usable.
+      setCaptionOverflows(Number.isFinite(lineHeight) && paragraph.scrollHeight > Math.ceil(lineHeight * 4) + 1);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(paragraph);
+    measure();
+    void document.fonts.ready.then(measure);
+    return () => { disposed = true; observer.disconnect(); };
+  }, [inWindow, post.caption]);
 
   const playWithSound = useCallback((video: HTMLVideoElement) => playVideoWithSound(video, () => previewActive.current && !playbackDisabled.current && videoRef.current === video, setAudioBlocked, undefined, { mute: Boolean(post.soundtrack?.muteVideo) }), [post.soundtrack?.muteVideo]);
   const attachVideo = useCallback((video: HTMLVideoElement | null) => {
@@ -143,9 +166,13 @@ export function MediaCard({ post, isAdmin, theaterOpen, onOpen, onEdit }: Props)
       </div>
       <SoundtrackPlayer track={post.soundtrack} active={hovering && !playbackDisabled.current} surface={surface} onActivate={() => flushSync(activate)} compact />
       <div className="min-h-[156px] px-4 py-4 sm:px-5">
-        <p className="font-editorial text-[22px] leading-tight text-studio-caption">{formatted} <span className="font-sans text-sm text-white/50">• Age {ageAt(post.takenAt)}</span></p>
-        {post.caption ? <p className="mt-2 line-clamp-4 text-base leading-relaxed text-white/80 sm:text-[18px]">{post.caption}</p> : <p className="mt-2 text-sm italic text-white/35">Untitled memory</p>}
-        <div className="flex items-center justify-between gap-2"><HeartButton postId={post.id} />{isAdmin ? <Link href={"/admin?at=" + encodeURIComponent(new Date(+new Date(post.takenAt) - 1000).toISOString())} className="inline-flex min-h-11 items-center gap-1 text-[10px] text-white/50 hover:text-studio-accent"><Plus className="h-3 w-3" /> Insert here</Link> : null}</div>
+        <p className="font-editorial text-[22px] leading-tight text-studio-caption">{formatted} {age !== null ? <span className="font-sans text-sm text-white/50">• Age {age}</span> : null}</p>
+        {post.caption ? <p id={captionId} ref={caption} className={"mt-2 whitespace-pre-wrap [overflow-wrap:anywhere] text-base leading-relaxed text-white/80 sm:text-[18px]" + (captionExpanded ? "" : " line-clamp-4")}>{post.caption}</p> : <p className="mt-2 text-sm italic text-white/35">Untitled memory</p>}
+        <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+          <div className="justify-self-start"><HeartButton postId={post.id} /></div>
+          <div className="flex min-h-11 min-w-11 items-center justify-center">{post.caption && captionOverflows ? <button type="button" aria-label={captionExpanded ? "Collapse caption" : "Show full caption"} aria-expanded={captionExpanded} aria-controls={captionId} title={captionExpanded ? "Collapse caption" : "Show full caption"} onClick={() => setExpandedCaption(captionExpanded ? null : post.caption)} className="group/caption flex h-11 w-11 items-center justify-center rounded-full text-studio-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-studio-accent"><span className="flex h-7 w-7 items-center justify-center rounded-full border border-studio-accent/25 bg-studio-fill/5 transition-colors group-hover/caption:bg-studio-fill/15">{captionExpanded ? <ChevronUp aria-hidden="true" className="h-4 w-4" /> : <ChevronDown aria-hidden="true" className="h-4 w-4" />}</span></button> : null}</div>
+          <div className="justify-self-end">{isAdmin ? <Link href={"/admin?at=" + encodeURIComponent(new Date(+new Date(post.takenAt) - 1000).toISOString())} className="inline-flex min-h-11 items-center gap-1 text-[10px] text-white/50 hover:text-studio-accent"><Plus className="h-3 w-3" /> Insert here</Link> : null}</div>
+        </div>
       </div>
     </motion.article>
   );
