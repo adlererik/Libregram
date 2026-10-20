@@ -1,10 +1,12 @@
 # Beginner guide: run your own Libregram
 
-By Erik Adler. Stable release: v1.5.0.
+By Erik Adler. Stable release: v1.6.0.
 
 This is your own Instagram-style photo/video website. Your computer or server stores the files and runs the CMS. A computer must stay powered on for other people to reach it. Start locally, add a few memories, then give it a public HTTPS address. You do not need Cloudflare, Google, Apple, or a fingerprint reader to install or sign in: new installations use a CMS username and password.
 
 The first supported walkthrough uses **Debian or Ubuntu Linux** and a normal user account with sudo access. Commands go in the **Terminal** app, or your SSH terminal for a headless server. Paste one block at a time. Text in angle brackets is an explanation, not something to paste.
+
+**Want fewer setup steps? Use the [Docker guide](DOCKER.md).** Download the release's Compose file, run `docker compose up -d`, then read your generated login with `docker compose exec libregram node deploy/docker/manage.mjs credentials`. Docker supplies Node, FFmpeg and SQLite tools; your empty gallery and private settings persist in a volume. The steps below are the alternative installation directly from source. Do not mix its `.env.local`/systemd commands with the Docker volume workflow.
 
 ## 1. Install basic tools
 
@@ -19,7 +21,7 @@ Sudo may ask for your computer/server password. Typing it shows no characters; p
 
 ```bash
 cd ~
-git clone --branch v1.5.0 https://github.com/adlererik/libregram.git
+git clone --branch v1.6.0 https://github.com/adlererik/libregram.git
 cd libregram
 ```
 
@@ -98,6 +100,8 @@ If port 3000 is busy, stop the program already using it. The launcher will not s
 Administrators get **Edit** on each wall post. Reorder its items by dragging or using move buttons, add more images/videos to turn a single post into a carousel, and remove individual items. Save changes when finished. **Insert here** starts a new memory near that date; you can always choose an exact date/time.
 
 In **Soundtrack**, drop or choose an audio file, preview it, set trim start/end, volume, and looping, and decide whether to mute the video's original audio. Save the post. See the [editing and soundtrack guide](CAROUSELS-SOUNDTRACKS-THEMES.md).
+
+If you separately run a web phone, **cogwheel → Phone** can enable a discreet handset with a destination URL and your own 4–12 digit PIN. Every use asks for the PIN on the website's touch keypad. It starts off, requires no paid service, and provides a shortcut to your existing phone rather than including a phone app. See [Phone settings](ADMIN.md#optional-phone-shortcut).
 
 Use **Theme** to choose Gold (the default), Graphite, light Porcelain, Midnight, or Verdant. Deleting a post or media removes its local files; make a backup first if you might need them again.
 
@@ -200,13 +204,13 @@ To upgrade to this release, **stop the site and back it up first**, then run the
 ```bash
 git rev-parse HEAD  # Write down this old revision for rollback.
 git fetch origin --tags
-git checkout v1.5.0
+git checkout v1.6.0
 ./libregram install
 export PATH="$PWD/.runtime/node/bin:$PATH"  # If you installed the private Node runtime.
 pnpm db:push
 ```
 
-**v1.5.0 adds optional visitor coordinates, duration, and last-update columns, plus a location-source field with a default for older history. Back up your database before the schema update.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./libregram build` then `./libregram start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
+**v1.4.0 introduced optional visitor coordinates, duration, and last-update columns, plus a location-source field with a default for older history. v1.6.0 adds no columns; back up your database before applying an older schema update.** When upgrading from v1.1.0 or earlier, this command also applies the optional soundtrack fields introduced in v1.2.0. Review Prisma's output. Stop if it asks to reset data or remove data; never add `--accept-data-loss`. Existing posts retain their media and order. After the schema update, a foreground installation uses `./libregram build` then `./libregram start`. For systemd, use `sudo bash deploy/rebuild-archive-root.sh "$USER"`. That script preserves the previous build, but does not roll back the database or Git revision; keep your private backup.
 
 For future releases, substitute their tag and follow their migration notes. If installed from a ZIP rather than Git, extract the new source into a separate folder and follow the migration instructions instead of running Git commands.
 

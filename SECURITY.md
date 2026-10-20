@@ -8,6 +8,8 @@ Run `./libregram setup` to generate a unique admin password and a session secret
 
 Admin account changes are stored as password hashes in SQLite; existing database account settings take precedence over environment bootstrap values. `./libregram reset-login` is a local recovery command. Rotate credentials if they have been exposed, and back up private files separately.
 
+Docker generates unique credentials/session state only at first runtime startup and stores it in the private `/data` volume; credentials are not built into image layers or printed in ordinary startup logs. An owner explicitly runs the credentials/recovery commands in the [Docker guide](docs/DOCKER.md). Protect the complete volume and its backups, including `container.json`, database and runtime settings. Default Compose binds port 3000 to loopback, runs the application without root, drops capabilities and mounts no Docker socket. Docker bridge peers are not automatically trusted proxies; see the guide before forwarding client IP headers.
+
 ## Public and private content
 
 The gallery and its media endpoints are public by design so visitors and Cast receivers can fetch them. Admin writes require authentication. SQLite contains private account and visitor data. Uploads, databases, local environment files, import manifests, backups, runtime state, and authentication material are excluded from source packages.
@@ -19,6 +21,8 @@ The visitor database records public IP addresses and approximate device/location
 Cloudflare mode must be configured explicitly. The CMS verifies signed Access JWTs, including issuer, audience, exact owner email, expiry, and configured hostname. It does not authenticate a bare email header or fall back to the password form when Cloudflare verification fails. Configure Access policies on the admin paths described in [Administration](docs/ADMIN.md); leave public gallery/share/media routes available for recipients and TV receivers.
 
 Shared links are public links to already public media, not a privacy boundary or password-protected album. Private `.runtime/shared-links/` files hold the ordered selections, and `.runtime/admin-auth.json` / `.runtime/visitor-exclusions.json` hold installation configuration. These files belong in private backups and never in source control. Preserve shared-link files and the hostname to retain sent links.
+
+Age and optional phone shortcut settings are private `.runtime/age-tracking.json` and `.runtime/phone-shortcut.json` files. Enabled age tracking exposes the configured birthday to public clients for calendar calculation; disabled tracking omits it. The phone shortcut stores a salted PIN hash and checks each submission with server limits. It grants no CMS administration privileges and issues no remembered phone-access token. It gates only the shortcut, not the destination application or direct phone URLs. A web phone is supplied separately and retains responsibility for its own authentication and communications security.
 
 ## Reporting a vulnerability
 

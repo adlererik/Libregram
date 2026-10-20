@@ -4,6 +4,8 @@ By Erik Adler.
 
 Start with the [beginner walkthrough](BEGINNER-GUIDE.md). The [public setup reference](PUBLIC-SETUP.md) covers prerequisites, restoration, release upgrades, boot service installation, and previous-build fallback. [Cloudflare operations](CLOUDFLARE.md) covers your separate HTTPS connector.
 
+**Docker users:** use [container operations](DOCKER.md) for Compose start/stop, image upgrades, full-volume backups/restoration and login recovery. Your private state lives in `/data`, not this checkout's `.env.local` or `prisma/dev.db`. Do not delete the named volume when replacing a container. The source/systemd commands below remain available for direct installations.
+
 ## Foreground installation
 
 Run these in the project folder. Keep the start terminal open:
@@ -41,7 +43,7 @@ Use the boot service or foreground launcher to own the server. Do not start two 
 
 ## Backups and migration
 
-Stop the application before copying SQLite, or use SQLite's online backup facility. Keep a matching private backup of `prisma/dev.db`, the complete `public/uploads/` directory, `.env`, `.env.local`, `.runtime/admin-auth.json`, `.runtime/age-tracking.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` when present. Restore those paths on a new server, preserve owner-only environment permissions, install locked dependencies, build, and check login/media before switching traffic. Original and derived upload files belong in the backup; caches under `work/` can be regenerated. Browser favorites and themes are tied to each browser/site address and are separate from SQLite backups.
+Stop the application before copying SQLite, or use SQLite's online backup facility. Keep a matching private backup of `prisma/dev.db`, the complete `public/uploads/` directory, `.env`, `.env.local`, `.runtime/admin-auth.json`, `.runtime/age-tracking.json`, `.runtime/phone-shortcut.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` when present. Restore those paths on a new server, preserve owner-only environment permissions, install locked dependencies, build, and check login/media before switching traffic. Original and derived upload files belong in the backup; caches under `work/` can be regenerated. Browser favorites and themes are tied to each browser/site address and are separate from SQLite backups.
 
 ### Copy a private backup on Debian/Ubuntu
 
@@ -52,7 +54,7 @@ archive_backup="$HOME/Archive-backups/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$archive_backup"
 chmod 700 "$HOME/Archive-backups" "$archive_backup"
 cp -a --parents .env .env.local prisma/dev.db public/uploads "$archive_backup/"
-for archive_private in .runtime/admin-auth.json .runtime/age-tracking.json .runtime/visitor-exclusions.json .runtime/shared-links .runtime/ip2location-usage.json; do
+for archive_private in .runtime/admin-auth.json .runtime/age-tracking.json .runtime/phone-shortcut.json .runtime/visitor-exclusions.json .runtime/shared-links .runtime/ip2location-usage.json; do
   if [ -e "$archive_private" ]; then
     cp -a --parents "$archive_private" "$archive_backup/"
   fi

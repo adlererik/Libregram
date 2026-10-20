@@ -4,7 +4,7 @@
 
 Libregram is Erik Adler's self-hosted photo/video gallery, preservation suite, and CMS. It is a free, open-source Instagram alternative focused on sharing without a walled garden or media lock-in, including single-URL media compilations, AirPlay, and Google Cast. It replaces a personal gallery workflow, not a full social network.
 
-Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.5.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, and verification.
+Read README.md, docs/FEATURES.md, and docs/CHANGELOG.md before making substantial changes. Stable public release: v1.6.0. Detailed guides cover beginner setup, administration, carousels/soundtracks/themes, favorites/casting, operations, Cloudflare, Docker, and verification.
 
 ## Architecture and behavior to preserve
 

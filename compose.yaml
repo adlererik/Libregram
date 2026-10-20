@@ -1,0 +1,29 @@
+name: libregram
+services:
+  libregram:
+    image: ghcr.io/adlererik/libregram:1.6.0
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${LIBREGRAM_BIND_ADDRESS:-127.0.0.1}:${LIBREGRAM_PORT:-3000}:3000"
+    environment:
+      TRUST_PROXY: "${TRUST_PROXY:-false}"
+      SESSION_COOKIE_SECURE: "${SESSION_COOKIE_SECURE:-false}"
+      LIBREGRAM_PUBLIC_ORIGIN: "${LIBREGRAM_PUBLIC_ORIGIN:-}"
+      CAST_MEDIA_ORIGIN: "${CAST_MEDIA_ORIGIN:-}"
+      VISITOR_GEO_PROVIDER: "${VISITOR_GEO_PROVIDER:-local}"
+      IP2LOCATION_API_KEY: "${IP2LOCATION_API_KEY:-}"
+    volumes:
+      - libregram_data:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  libregram_data:

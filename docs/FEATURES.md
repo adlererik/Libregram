@@ -1,4 +1,4 @@
-# Complete feature guide — v1.5.0
+# Complete feature guide — v1.6.0
 
 By Erik Adler. See the [beginner guide](BEGINNER-GUIDE.md) to install and the [changelog](CHANGELOG.md) for version history.
 
@@ -81,6 +81,8 @@ The browser tab/page title follows **Header text → Title**, including gallery,
 
 The admin-only cogwheel at the right end of the gallery icon row opens settings: visitor history, gallery title/eyebrow/introduction, login settings, and Info & documentation. The square-plus opens the separate **A new chapter** media uploader. The Info panel contains the included installation, feature, editing, casting, and operation guides.
 
+An optional handset shortcut opens a themed PIN keypad. Visitors see it at the far right beneath the login lock; administrators see it immediately left of Settings. **Settings → Phone** supplies an on/off switch, destination URL (including a local path such as `/com`), and a 4–12 digit PIN. The icon is off by default. Every use requires a fresh PIN, including for administrators. The touch keypad uses buttons rather than the phone's software keyboard, briefly shows the last digit, then masks it, and clears when closed or backgrounded. It supports Clear/Backspace and desktop keyboards. There is no remembered unlock cookie/token or PIN in browser storage, URLs, or application logs. The server stores a salted hash in private runtime configuration and limits incorrect attempts. This controls only the shortcut; the separately provided phone app, its own login, direct links, chat, calls, and notifications remain as configured. A web phone is not included in Libregram and no paid service is required for the shortcut. See [Phone setup](ADMIN.md#optional-phone-shortcut).
+
 Region choices can show Western Europe, Scandinavia (Denmark, Norway, Sweden, Finland, and Iceland), North America, South America, Asia, or World, with several regions combined. Visitor counts, device summaries, and paginated history follow the selection; excluded regions remain recorded. This is display filtering, not traffic blocking or bot detection. The administrator browser remembers its choice.
 
 Statistics include visits, collection counts/hearts, IPv4/IPv6 addresses, estimated city/country with flags, device, OS icons, browser, and visible-page duration. Optional free IP2Location.io lookup uses caching, a daily cap, and a local fallback; historical estimates can be refreshed. A small map link opens estimated coordinates in Apple Maps or Google Maps according to the administrator device. IPs are visible only to the administrator. Local addresses and recognized administrator browsers/IPs are excluded, including matching historical rows. Sign in on a new browser/address to identify it as yours. Location is IP-derived, not GPS, and can be wrong or missing. History remains until manually deleted, with individual/all-record deletion and paged access to older records. The visitor privacy page describes this behavior. Administrative statistics are not shipped with source releases.
@@ -93,9 +95,11 @@ Originals and generated previews/playback files live under `public/uploads/`; re
 
 ## Install and maintain
 
+**Docker quick start:** prebuilt native AMD64/ARM64 images include Node, FFmpeg, Prisma and local GeoIP. Download the release's Compose file and start it; first boot creates an empty gallery, unique password and session secret in one persistent `/data` volume. The app runs without root privileges and has a healthcheck, explicit login recovery, a single-instance volume lock, and database backup before changed-schema application. Password login, no preset birthday and the optional phone icon off are the defaults. Source/volume backups remain separate; see [Docker instructions](DOCKER.md).
+
 Supported beginner path: Debian/Ubuntu Linux, Node.js 24+, pinned pnpm, FFmpeg/FFprobe, Git, Bash. Setup starts empty and builds production code. The launcher uses port 3000 on all interfaces and refuses an occupied port instead of opening a duplicate on 3001.
 
-Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.5.0 adds optional visitor coordinates/duration and a location-source default; v1.2.0 added optional soundtrack fields. Back up SQLite and apply the schema before building an older installation. See [free visitor lookup setup and limitations](VISITOR-STATS.md).
+Start/stop/restart/status commands, Debian boot services, Cloudflare Quick/named tunnels, public HTTPS, private backups, server migration, and release upgrades are documented. The rebuild helper preserves the previous build, not a database/source rollback. v1.4.0 added optional visitor coordinates/duration and a location-source default; v1.2.0 added optional soundtrack fields. Back up SQLite and apply the schema before building an older installation. See [free visitor lookup setup and limitations](VISITOR-STATS.md).
 
 Source ZIP/tarball releases include checksums, schema, lockfile, and guides. They exclude credentials, personal media, populated databases, visitor data, private settings, backups, runtime binaries, and compiled output. The source is MIT licensed; owners maintain their own hosting and storage.
 

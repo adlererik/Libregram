@@ -4,6 +4,8 @@ By Erik Adler.
 
 New to this? Start with the [beginner walkthrough](BEGINNER-GUIDE.md) and [feature guide](FEATURES.md).
 
+For the shortest fresh-install path, use the [Docker image and Compose guide](DOCKER.md). It generates its own unique credentials and stores installation data under a named `/data` volume. The source/environment/systemd instructions below apply to a direct installation; Docker has separate backup and recovery commands.
+
 ## Local installation
 
 Use Linux with Node.js 24+, pnpm 12.10.1, FFmpeg/FFprobe, Git, and Bash. The lockfile fixes dependency versions. Install pnpm using `npm install -g pnpm@12.10.1`; install FFmpeg on Debian using `sudo apt-get install ffmpeg`. Node must be on PATH, or installed privately at `.runtime/node/bin/node`.
@@ -51,7 +53,7 @@ After `sudo reboot`, enabled services start automatically. Do not also start a f
 
 ## Back up and migrate
 
-Stop the application before copying the SQLite database. Store `prisma/dev.db`, the complete `public/uploads/` directory, `.env.local`, `.env`, `.runtime/admin-auth.json`, `.runtime/age-tracking.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` (when present) in a separate **private** backup. Shared URLs depend on those shared-link files. See the copy commands in [Operations](OPERATIONS.md#backups-and-migration). SQLite contains posts, account hashes, hearts, site settings, and visitor records. Generated media is also under uploads. Favorites belong to each viewer's browser and are not a server backup.
+Stop the application before copying the SQLite database. Store `prisma/dev.db`, the complete `public/uploads/` directory, `.env.local`, `.env`, `.runtime/admin-auth.json`, `.runtime/age-tracking.json`, `.runtime/phone-shortcut.json`, `.runtime/visitor-exclusions.json`, and `.runtime/shared-links/` (when present) in a separate **private** backup. Shared URLs depend on those shared-link files. See the copy commands in [Operations](OPERATIONS.md#backups-and-migration). SQLite contains posts, account hashes, hearts, site settings, and visitor records. Generated media is also under uploads. Favorites belong to each viewer's browser and are not a server backup.
 
 On the destination machine, install prerequisites, clone the desired release tag, and install dependencies with `./libregram install`. Restore private files to the same relative paths and keep restrictive environment-file permissions (`chmod 600 .env .env.local`). As the owning user, run `pnpm db:push` after reviewing its proposed schema changes, then `./libregram build`. Start locally or install the boot service. Check the gallery, login, and media before switching traffic. Do not run setup to generate a second account when restoring an existing database.
 
@@ -61,7 +63,7 @@ Stop the application, make a private backup, and record the old Git revision fir
 
 ```bash
 git fetch origin --tags
-git checkout v1.5.0  # Substitute the release you intend to install.
+git checkout v1.6.0  # Substitute the release you intend to install.
 ./libregram install
 # Review schema changes, then apply only if appropriate:
 pnpm db:push
@@ -70,6 +72,8 @@ pnpm db:push
 v1.4.0 introduced optional visitor latitude/longitude, duration, last-update time, and a location-source field with a default for older rows. Back up SQLite first, then apply `pnpm db:push` before building when upgrading from an earlier schema. Existing posts, visitor history, credentials, and login mode stay intact. Upgrades from v1.1.0 or earlier also need the optional soundtrack fields introduced in v1.2.0. Never use `--accept-data-loss` or reset the existing database.
 
 v1.5.0 names the project Libregram, adds region filtering, and uses the configured gallery title for browser tabs. There are no new columns; the schema's default gallery title becomes Libregram for new installations. See [rename and upgrade compatibility](RENAMING.md) before changing an older deployment's service names. Keep an existing checkout in place: new GitHub URLs and new launch commands do not require moving private data.
+
+v1.6.0 adds Docker distribution, live age tracking settings, expandable captions and an optional PIN shortcut. It adds no database columns. Include `.runtime/age-tracking.json` and `.runtime/phone-shortcut.json` in private backups. The existing locked Prisma CLI and TSX runner become runtime dependencies for container initialization and optional Instagram export import; install the release lockfile normally. Direct installations keep their existing data paths, credentials and optional login mode. Docker is an alternative for new deployments, not an automatic conversion of an existing server; plan a private data migration before switching deployment methods.
 
 For a foreground installation: `./libregram stop`, `./libregram build`, `./libregram start`.
 

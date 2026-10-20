@@ -12,8 +12,9 @@ import type { HeaderSettings } from "@/lib/settings";
 import { useFavorites } from "./favorites-provider";
 import { ThemeButton } from "./theme-button";
 import { ThumbnailWall } from "./thumbnail-wall";
+import { PhoneEntryButton } from "./phone-entry-button";
 
-type Props = { header: HeaderSettings; initialPosts: ArchivePost[]; initialCursor: string | null; isAdmin: boolean; ip2Location: boolean };
+type Props = { header: HeaderSettings; initialPosts: ArchivePost[]; initialCursor: string | null; isAdmin: boolean; ip2Location: boolean; phoneEnabled: boolean };
 
 function FilmReelIcon() {
   return <svg aria-hidden="true" data-icon="film-reel" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +31,7 @@ function FilmReelIcon() {
   </svg>;
 }
 
-export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin, ip2Location }: Props) {
+export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin, ip2Location, phoneEnabled }: Props) {
   const favorites = useFavorites();
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
@@ -134,7 +135,10 @@ export function ArchiveWall({ header, initialPosts, initialCursor, isAdmin, ip2L
           <button type="button" onClick={toggleView} aria-label={view === "thumbnails" ? "Return to the timeline" : "Browse every image and video"} aria-pressed={view === "thumbnails"} title={view === "thumbnails" ? "Return to the timeline" : "Browse every image and video"} className="gallery-icon-button">{view === "thumbnails" ? <Rows3 aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /> : <Grid3X3 aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} />}</button>
           <Link href="/favorites" className="gallery-icon-button gallery-presentation-link" aria-label={"Presentation selection" + (favorites.ready ? ": " + favorites.ids.length + " selected" : "")} title="Presentation selection"><FilmReelIcon />{favorites.ready ? <span className="gallery-selection-count" aria-hidden="true">{favorites.ids.length}</span> : null}</Link>
           {isAdmin ? <Link href="/admin" className="gallery-icon-button" aria-label="Add memory" title="Add memory"><SquarePlus aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link> : null}
-          {isAdmin ? <Link href="/admin/settings" className="gallery-icon-button gallery-settings-link" aria-label="Libregram settings" title="Libregram settings"><Settings aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link> : null}
+          {phoneEnabled || isAdmin ? <div className="gallery-toolbar ml-auto">
+            {phoneEnabled ? <PhoneEntryButton /> : null}
+            {isAdmin ? <Link href="/admin/settings" className="gallery-icon-button" aria-label="Libregram settings" title="Libregram settings"><Settings aria-hidden="true" className="h-5 w-5" strokeWidth={1.6} /></Link> : null}
+          </div> : null}
         </div>
       </header>
 

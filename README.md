@@ -2,7 +2,7 @@
 
 ### A free Instagram alternative. Your media, without the walled garden.
 
-By **Erik Adler** · Latest release **v1.5.0** · [MIT license](LICENSE)
+By **Erik Adler** · Latest release **v1.6.0** · [MIT license](LICENSE)
 
 **Libregram is a free, open-source Instagram alternative focused on sharing your photos and videos without media lock-in.** Run it on your own server, keep your originals, and move your collection whenever you want. An Instagram-style timeline, a cinematic gallery, and a built-in CMS make it easy to publish and enjoy your memories.
 
@@ -64,12 +64,13 @@ Desktop
 
 **New to servers? Follow the [beginner guide](docs/BEGINNER-GUIDE.md).** It explains the terminal commands, first login, first upload, sharing, TV playback, public HTTPS, startup at boot, backups, and recovery.
 
-- [Download v1.5.0](https://github.com/adlererik/libregram/releases/tag/v1.5.0)
+- [Easiest start: Docker and Compose](docs/DOCKER.md) — download one file, start, and read your generated login.
+- [Download v1.6.0](https://github.com/adlererik/libregram/releases/tag/v1.6.0)
 - [All features](docs/FEATURES.md)
 - [Installation and migration reference](docs/PUBLIC-SETUP.md)
 - [Sharing, presentations, and casting](docs/FAVORITES-CASTING.md)
 - [Administration and visitor history](docs/ADMIN.md)
-- [Release notes](docs/RELEASE-v1.5.0.md)
+- [Release notes](docs/RELEASE-v1.6.0.md)
 - [Upgrade an existing installation](docs/RENAMING.md)
 
 ## What makes Libregram useful
@@ -97,6 +98,8 @@ Desktop
 | Visitor region filters | Combine Western Europe, Scandinavia, North America, South America, and Asia, or choose World; filter counts/history without blocking traffic or deleting records. |
 | Your own page title | The browser tab uses the Title saved in Header text settings. |
 | Age tracking settings | Enter a person's birthday, preview their age today, and toggle age labels on memories; save without rebuilding or restarting. |
+| Optional PIN shortcut | Enable a handset, set a destination URL and a 4–12 digit PIN. Every tap opens a fresh themed keypad; the separate phone app keeps its own security. Off by default. |
+| Ready-to-run Docker image | Start with Compose on AMD64 or ARM64, with generated credentials, persistent media/settings, recovery commands, and safe schema initialization. |
 | Persistent statistics | History stays until you manually delete one visit or all history; older records are paginated. |
 | Simple default login | A unique username/password installation with local recovery; optional verified Cloudflare identity login for owners who configure it. |
 | Settings and handbook | The cogwheel contains header text, visitor history, login settings, and included documentation; the square-plus keeps uploads separate. |
@@ -107,14 +110,27 @@ Desktop
 
 See [features and practical limits](docs/FEATURES.md).
 
-## Quick installation
+## Quick start with Docker
+
+Install [Docker with Compose](https://docs.docker.com/compose/install/). In an empty folder, download **compose.yaml** from the [release](https://github.com/adlererik/libregram/releases/tag/v1.6.0), then:
+
+```bash
+docker compose up -d
+docker compose exec libregram node deploy/docker/manage.mjs credentials
+```
+
+Open [http://localhost:3000](http://localhost:3000). The second command privately displays your unique generated login; normal container logs do not print the password. No environment file, Node installation, Cloudflare account, or API key is needed. A new volume starts empty with ordinary CMS password login, no preset birthday, and the phone icon off. Read the [Docker guide](docs/DOCKER.md) for installation, LAN/HTTPS access, upgrades, backups, and password recovery. The default port is local to that computer; enabling public access is a separate setup step.
+
+The public image is **`ghcr.io/adlererik/libregram:1.6.0`**. Keep the data volume: it holds your uploads, database, settings, credentials and shared links. `docker compose down` keeps it; `docker compose down -v` deletes it. Existing README screenshots stay here as documentation; the image contains no personal gallery or installation data.
+
+## Install directly from source
 
 Supported walkthrough: **Debian/Ubuntu Linux**, a normal user with sudo, **Node.js 24+**, **pnpm 12.10.1**, **FFmpeg / FFprobe**, **Git**, and **Bash**. The beginner guide supplies prerequisite commands; do not run application setup as root.
 
 Once those tools are installed:
 
 ```bash
-git clone --branch v1.5.0 https://github.com/adlererik/libregram.git
+git clone --branch v1.6.0 https://github.com/adlererik/libregram.git
 cd libregram
 ./libregram setup
 ./libregram start
@@ -158,6 +174,8 @@ INSTAGRAM_EXPORT_DIR="/path/to/your/extracted-export" pnpm import:instagram
 
 The importer reads JSON from disk, preserves timestamps/carousels, fixes common caption encoding, and copies your media into `public/uploads/`. Previously imported source IDs prevent duplicates. You do not need to provide Instagram login credentials. Import media you are entitled to publish.
 
+Docker users can mount an export read-only and run the [container import command](docs/DOCKER.md#import-your-own-instagram-export); no host Node installation is needed.
+
 ## TV playback and sound
 
 Google Cast requires a supported Chrome browser and compatible receiver; native AirPlay requires Safari and an AirPlay-compatible receiver. A Chromecast-only TV does not automatically support AirPlay. Use receiver-reachable HTTPS media and allow discovery on your network. The Cast icon is hidden when the browser lacks the required API.
@@ -166,7 +184,7 @@ Google Cast presentation queues run on the receiver. AirPlay presentation advanc
 
 ## Privacy, costs, and ownership
 
-**Release downloads contain no private passwords, tokens, account configuration, personal media files, populated databases, visitor records, private backups, runtime binaries, or compiled builds.** Each installation supplies its own collection and receives its own credentials. The intentionally published README screenshot links remain.
+**Source downloads contain no private passwords, tokens, account configuration, personal media files, populated databases, visitor records, private backups, runtime binaries, or compiled builds.** Docker images contain the public compiled application and its dependencies; private installation data is generated in your volume after first startup. Each installation supplies its own collection and receives its own credentials. The intentionally published README screenshot links remain.
 
 The published gallery, media, and shared links are public. Admin and visitor IPs require authentication. Visitor history is local, has no automatic deletion, and excludes local/recognized owner traffic. Customize the included visitor privacy notice for your deployment. The default local lookup sends no IPs to a lookup provider. You can [enable the free IP2Location.io API](docs/VISITOR-STATS.md#enable-free-ip2locationio) for IPv4/IPv6 city estimates, flags, and map links. When enabled, outside public IPs are sent to the provider; its attribution appears on the gallery, privacy notice, and admin statistics. Map pins are approximate, never someone’s exact GPS position. Duration measures visible-page time, not verified attention.
 
@@ -174,4 +192,4 @@ IP2Location.io currently allows 1,000 keyless requests/day or 50,000/month with 
 
 The software is **MIT licensed** and requires no paid sharing API, link shortener, casting registration, or CMS subscription. Hosting, storage, electricity, Internet service, domain registration/renewal, and receiver hardware are your own costs. Optional Cloudflare services have their own plan limits; the standard password login works without them. See [optional identity setup and current plan references](docs/ADMIN.md).
 
-Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.5.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.
+Built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Lucide, Prisma, and SQLite. See [security](SECURITY.md), [release notes](docs/RELEASE-v1.6.0.md), and [changelog](docs/CHANGELOG.md). Instagram is a trademark of its owner; this independent project is not affiliated with Instagram or Meta.

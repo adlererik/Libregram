@@ -1,6 +1,6 @@
 # Visitor statistics, locations, and persistent history
 
-By Erik Adler · v1.5.0.
+By Erik Adler · v1.6.0.
 
 ## Find the statistics
 

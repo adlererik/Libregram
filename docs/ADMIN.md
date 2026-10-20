@@ -4,6 +4,8 @@ By Erik Adler.
 
 Open `/admin/login` and enter your username and password. On a new database, the environment variables `ADMIN_USERNAME` and `ADMIN_PASSWORD` establish the initial account. The database then stores the username and a salted password hash. Changing `.env.local` does not replace an existing account.
 
+For [Docker installations](DOCKER.md), first boot generates and stores credentials privately in the data volume. Read them with `docker compose exec libregram node deploy/docker/manage.mjs credentials`. Use that guide's `reset-login` command for recovery; the source installation's environment-file commands below are not the container recovery workflow.
+
 Use the cogwheel → Login settings to change the username or password with the current password. Old sessions are revoked after a change. If you lose access, set the desired `ADMIN_USERNAME` and `ADMIN_PASSWORD` in private `.env.local`, then run `./libregram reset-login` locally from the project directory. This replaces the stored login and revokes existing sessions. Keep real passwords and session secrets in `.env.local`; never commit that file.
 
 ## Optional Cloudflare sign-in
@@ -69,3 +71,22 @@ Save to apply changes without editing environment files, rebuilding, or restarti
 The authenticated settings API saves `.runtime/age-tracking.json` atomically with owner-only file permissions. Include it in private backups; no database schema change or paid service is needed. Existing `NEXT_PUBLIC_BIRTH_DATE` configuration is used only before the first form save. Saved settings, including an explicit Off choice, take precedence across restarts and upgrades.
 
 Age labels are public. While tracking is enabled, the birthday is delivered to visitors' browsers to calculate them. When disabled, the saved birthday is omitted from public page settings but remains available to the authenticated administrator. Never publish the private runtime file or installation environment in Git.
+
+## Optional phone shortcut
+
+Libregram can open an existing web phone through a PIN keypad. The phone itself is supplied and managed separately. This optional shortcut is **off by default**, and works without a paid service or Cloudflare integration.
+
+1. Sign in and open **cogwheel → Phone**.
+2. Set **Destination URL** to your existing phone address. Use `/com` for a phone on the gallery's own hostname, or a full `https://…` address. HTTP URLs are also supported for local installations; use HTTPS for public access. Addresses containing a username/password, scripts, or unsupported schemes are rejected.
+3. Set and confirm your own **4–12 digit PIN**. Leading zeroes are preserved.
+4. Enable **Show the phone icon**, then **Save phone settings**. Reload an already-open gallery tab to see the change.
+
+Visitors see the handset beneath the login lock at the right end of the gallery controls. When signed in, it sits immediately left of Settings. Tapping it opens a keypad matching the current gallery theme, with a small display, telephone-style number buttons, Clear, Backspace, and **Continue**. The public keypad uses neutral wording and has no descriptive phone heading or repeat-PIN reminder. Its display briefly shows the newest digit, then masks it. No editable input is used in the public keypad, so tapping its buttons does not invoke the mobile software keyboard. Desktop number keys also work; Escape closes and Tab moves through the buttons.
+
+**Every tap requires a fresh PIN**, including after a previous success or for an administrator. Entering the correct PIN opens the saved destination in the same tab. There is no remembered unlock, phone-access cookie/token, or client-stored PIN. Closing the keypad, leaving the page, returning through browser history, or backgrounding the page clears the keypad. The PIN is sent only in the POST body to the gallery server, never in the URL; the handler does not log it. Browser/device software outside Libregram can still capture input, and the phone app can retain its own existing login.
+
+Incorrect entries have increasing delays; six failures trigger a five-minute wait. Limits are grouped by the server-recognized client IP, so devices sharing one public address may share a cooldown. A separate server-wide budget and verification-concurrency limit bound resource use. Limiter keys are opaque hashes kept in memory for fifteen minutes; restarting the server resets the limits. Client-supplied forwarded addresses are honored only when the existing `TRUST_PROXY=true` setting is used through the trusted loopback proxy. Use the documented `./libregram` launcher/custom Node server; it handles `/api/phone-entry` before the Next.js router.
+
+Settings are stored atomically in private `.runtime/phone-shortcut.json` with owner-only file permissions. Only a salted scrypt hash of the PIN is stored; neither the hash nor the saved PIN is returned to the browser. The authenticated settings page receives the destination, enabled state, and whether a PIN is set. Public gallery pages receive only the visibility flag; a successful PIN check returns the destination. Leave both PIN fields blank when saving to keep an existing PIN. To replace a forgotten PIN, set a new one in Settings—no old PIN is needed once you are authenticated as the CMS owner. Include this private file in backups and never publish it in Git.
+
+Turning the icon off hides the shortcut and stops its PIN endpoint from returning a destination. **This is a shortcut gate:** it does not add protection to the destination website, modify `/com` or `/calls`, alter call signaling, or change the separate phone app's chat/video/voice/notification features. Direct links and already-open phone tabs continue to follow that application's own security. Phone PIN access does not grant CMS administrator access.

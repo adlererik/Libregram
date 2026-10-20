@@ -2,6 +2,7 @@ import http from "node:http";
 import next from "next";
 import { createVisitorTracker } from "./visitor-tracker.mjs";
 import { serveMedia } from "./serve-media.mjs";
+import { createPhoneEntry } from "./phone-entry.mjs";
 
 const port = Number(process.env.LIBREGRAM_PORT || process.env.ARCHIVE_PORT || 3000);
 const hostname = process.env.LIBREGRAM_HOST || process.env.ARCHIVE_HOST || "0.0.0.0";
@@ -13,8 +14,10 @@ if (!sessionSecret || sessionSecret.length < 32 || ["replace-with-a-long-random-
 const { PrismaClient } = await import("@prisma/client");
 const prisma = new PrismaClient();
 const visitorTracker = createVisitorTracker({ prisma, secret: sessionSecret });
+const phoneEntry = createPhoneEntry({ secret: sessionSecret });
 const handle = app.getRequestHandler();
 const server = http.createServer(async (req, res) => {
+  if (await phoneEntry.handle(req, res)) return;
   if (await visitorTracker.handle(req, res)) return;
   try { if (!await serveMedia(req, res)) await handle(req, res); } catch (error) { console.error(error); if (!res.headersSent) res.writeHead(500); res.end("Unable to serve Libregram"); }
 });

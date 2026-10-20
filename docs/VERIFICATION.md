@@ -2,6 +2,16 @@
 
 By Erik Adler. Historical checks began October 9, 2026.
 
+## Libregram v1.6.0 distribution — October 20, 2026
+
+The container was built from a separate Git-index source archive, with no installation environment, private birthday, runtime configuration, media or database in its context. The production build completed TypeScript validation and static generation; runtime dependencies were pruned using the release lockfile. The image uses the same custom Node server as a source installation.
+
+A fresh local Linux AMD64 container started successfully and passed its configured HTTP healthcheck. Its volume contained zero posts, media items and visits, one uniquely initialized administrator account, and empty upload/runtime directories. The process ran as UID/GID 1000 with dropped capabilities. Generated container state and SQLite files had permissions 0600. Normal startup logs showed the private credentials command without displaying a password. This is clean startup/readiness evidence, not a new browser interaction, import, or physical receiver test.
+
+All nine existing README image elements are preserved exactly. Current source/release contents are reviewed for private paths, credential patterns and known installation-secret matches; archives are produced from Git rather than a populated workspace. Docker's allowlisted build context excludes environments, media, local databases, runtime state and previous builds. Runtime credentials are generated after image build in the private data volume. Historical release tags and published screenshot references remain intact.
+
+The container publishing workflow builds native AMD64 and ARM64 images and combines them into the stable release manifest. The public package and release provide image digests and source/deployment-file checksums. No new automated test suite or physical phone/TV tests were added for this release; earlier device evidence below remains historical, with the casting/autoplay limits in the current feature guide.
+
 ## Libregram v1.5.0 build and rename evidence — October 14, 2026
 
 Local and isolated Debian production builds completed with TypeScript checking. All nine README image elements match the previous source exactly. Git history, current source, and source-only downloads were audited for private data. No fresh-install, browser interaction, or physical receiver tests were run for this rename. Server activation requires the administrator's sudo password; staging is not a live deployment. The historical checks below describe earlier versions.

@@ -1,11 +1,17 @@
 # Changelog and development notes
 
-## Unreleased — October 17, 2026
+## v1.6.0 — October 20, 2026
 
+- Publish Docker/Compose distribution for native Linux AMD64 and ARM64. Bundle supported Node, FFmpeg and SQLite tools; generate unique credentials and an empty gallery on first boot in a persistent private volume. Run without root privileges and provide health reporting, login recovery, single-volume instance locking, and private backup before changed-schema updates.
+- Add an allowlisted Docker build context, public release image workflow, beginner container guide and persistent-volume backup/restore instructions. Build published images from audited Git source without installation environments, media, databases, birthdays or runtime credentials.
+- Add an optional theme-adaptive handset shortcut in the gallery toolbar: beneath the login lock for visitors, immediately left of Settings for administrators. Settings → Phone controls visibility, the destination URL, and a private 4–12 digit PIN; new installations leave the icon off.
+- Present a polished touch keypad with digit feedback, masking, Clear/Backspace, keyboard accessibility, and matching light/dark themes. Require a fresh server-verified PIN on every use; clear entry on close, navigation, or backgrounding. Issue no remembered unlock cookie/token and keep the PIN out of browser storage and URLs.
+- Use neutral public keypad wording: remove the descriptive phone heading and repeat-PIN reminder, label the action Continue, and retain an accessible hidden title.
+- Store only a salted scrypt PIN hash in private runtime settings. Limit attempts at the custom Node server using trusted client addresses, increasing failure delays, bounded verification concurrency, and a global budget. This gates the shortcut only; existing web-phone applications and direct URL access retain their own security and behavior.
 - Add Settings → Age tracking with a date-of-birth picker, age-today preview, and on/off switch. Apply changes to feed/theater immediately without rebuilding; persist authenticated settings atomically in private runtime storage, retaining legacy birthday configuration as a first-use fallback.
 - Use the configured calendar birthday consistently in feed and theater age labels; validate dates and hide labels when the birthday is missing/invalid instead of substituting a hardcoded date. Fresh setup leaves optional age labels unconfigured rather than inventing a birthday.
 - Add a small centered expand/collapse chevron to overflowing feed captions. Preserve line breaks, wrap long words, adapt to themes and changing widths, and expose accessible expanded state without opening the media viewer.
-- No database schema, authentication, public-domain, media-link, or dependency changes.
+- Keep database schema, CMS login defaults, public-domain and shared-link behavior compatible. Move the existing locked Prisma CLI and TSX runner to runtime dependencies for container initialization and import; no dependency versions are upgraded.
 
 ## v1.5.0 — October 14, 2026
 
